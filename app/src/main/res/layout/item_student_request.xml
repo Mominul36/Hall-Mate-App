@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/item_student_background">
+
+
+    <TextView
+        android:id="@+id/room"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="413"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp"
+        android:background="@drawable/item_student_background"/>
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="0802420205101143"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp"
+        android:background="@drawable/item_student_background"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="MD. RUHUL AMIN KHAN ZENITH"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp"
+        android:background="@drawable/item_student_background"/>
+
+</LinearLayout>

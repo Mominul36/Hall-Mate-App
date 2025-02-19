@@ -221,6 +221,10 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 //                supportFragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment()).commit()
                 startActivity(Intent(this, MProfileActivity::class.java))
             }
+            R.id.nav_student -> {
+//                supportFragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment()).commit()
+                startActivity(Intent(this, MStudentActivity::class.java))
+            }
 
             R.id.nav_logout -> {
                 auth.signOut()

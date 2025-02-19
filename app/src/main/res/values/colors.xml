@@ -8,6 +8,8 @@
     <color name="bg_color">#FFFFFFFF</color>
     <color name="orange">#FFA500</color>
     <color name="temp_color">#D3DEDE</color>
+    <color name="accept_button_color"> #04AA6D</color>
+    <color name="deny_button_color">#f44336</color>
 
 
 

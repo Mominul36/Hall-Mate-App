@@ -10,8 +10,13 @@
         android:icon="@drawable/ic_profile"/>
 
     <item
+        android:id="@+id/nav_student"
+        android:title="Student"
+        android:icon="@drawable/ic_profile"/>
+
+    <item
         android:id="@+id/nav_logout"
-        android:title="Profile"
+        android:title="Log Out"
         android:icon="@drawable/ic_profile"/>
 
 </menu>
