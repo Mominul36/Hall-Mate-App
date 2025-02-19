@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.StudentLoginActivity"
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textColor="@color/black"
+        android:textSize="38sp"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="monospace"
+        />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/temp_edit"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Email"
+        android:textSize="24sp"
+        android:paddingHorizontal="10dp"
+        android:textColor="@color/black"
+       android:inputType="textEmailAddress"
+        />
+
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/temp_edit"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Password"
+        android:textSize="24sp"
+        android:paddingHorizontal="10dp"
+        android:textColor="@color/black"
+        android:inputType="textWebPassword"
+        android:layout_marginTop="15dp"
+        />
+
+
+
+    <TextView
+        android:id="@+id/go_to_reset_password"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Forget Password?"
+        android:textColor="#03188A"
+        android:textSize="18sp"
+        android:layout_gravity="end"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        />
+
+
+
+
+
+
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        style="@android:style/Widget.Button"
+        android:text="Login"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+
+</LinearLayout>

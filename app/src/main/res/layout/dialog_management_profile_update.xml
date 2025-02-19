@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    android:background="@drawable/bg_dialog_management_profile"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/cross"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_cross"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="50dp"
+            android:gravity="center"
+            >
+
+            <!-- EditText for first input -->
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:inputType="text"
+                android:background="@drawable/temp_edit"
+                android:paddingHorizontal="15dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                />
+
+            <!-- EditText for second input -->
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:inputType="text"
+                android:background="@drawable/temp_edit"
+                android:paddingHorizontal="15dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginTop="15dp"
+                />
+            <!-- EditText for third input -->
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:inputType="text"
+                android:background="@drawable/temp_edit"
+                android:paddingHorizontal="15dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginTop="15dp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Update"
+                app:cornerRadius="10dp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/base_color"
+                />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+</androidx.cardview.widget.CardView>

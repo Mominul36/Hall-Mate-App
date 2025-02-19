@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bottom_navigation_background"
+    android:padding="8dp">
+
+    <!-- Home item -->
+    <LinearLayout
+        android:id="@+id/nav_home"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/icon_home"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/home" />
+
+        <TextView
+            android:id="@+id/txt_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textSize="12sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Market item -->
+    <LinearLayout
+        android:id="@+id/nav_market"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/icon_market"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/cart" />
+
+        <TextView
+            android:id="@+id/txt_market"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Market"
+            android:textSize="12sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Crop Care item -->
+    <LinearLayout
+        android:id="@+id/nav_service"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/icon_crop_care"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/crop_care" />
+
+        <TextView
+            android:id="@+id/txt_crop_care"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Service"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- Advisor item -->
+    <LinearLayout
+        android:id="@+id/nav_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/icon_advisor"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/message" />
+
+        <TextView
+            android:id="@+id/txt_advisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:textSize="12sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Profile item -->
+    <LinearLayout
+        android:id="@+id/nav_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/icon_profile"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/profile_user" />
+
+        <TextView
+            android:id="@+id/txt_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="12sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</LinearLayout>

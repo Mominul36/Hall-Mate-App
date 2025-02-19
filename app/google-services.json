@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "915732254252",
+    "firebase_url": "https://study-bd012-default-rtdb.firebaseio.com",
+    "project_id": "study-bd012",
+    "storage_bucket": "study-bd012.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915732254252:android:8cf05f9655e15e23214b89",
+        "android_client_info": {
+          "package_name": "com.example.hallmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjYV7rar_7BhkQh3YwLdPjnj9CoiJG5MA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
