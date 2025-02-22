@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.hallmate.Activity.ManagementLoginActivity
@@ -21,6 +22,8 @@ import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Model.DayMealStatus
 import com.example.hallmate.Model.Hall
 import com.example.hallmate.Model.Management
+import com.example.hallmate.Model.Meal
+import com.example.hallmate.Model.MealForRV
 import com.example.hallmate.Model.Student
 import com.example.hallmate.databinding.ActivityMainBinding
 import com.google.firebase.auth.EmailAuthProvider
@@ -38,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     private var database = FirebaseDatabase.getInstance()
     lateinit var load : Loading2
+
+    var bb = "Hello"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +62,14 @@ class MainActivity : AppCompatActivity() {
 
         checkAuthentication()
 
-       // bal()
+
 
 
 
 
     }
+
+
 
 
     private fun checkAuthentication() {

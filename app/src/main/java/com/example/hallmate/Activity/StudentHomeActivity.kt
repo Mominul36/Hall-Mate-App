@@ -18,6 +18,7 @@ import com.example.hallmate.Class.Loading
 import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Fragments.MHomeFragment
 import com.example.hallmate.Fragments.SHomeFragment
+import com.example.hallmate.Fragments.SMealStatusFragment
 import com.example.hallmate.MainActivity
 import com.example.hallmate.Model.Meal
 import com.example.hallmate.R
@@ -132,7 +133,7 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         navMarket.setOnClickListener {
             setNavigationItemColor(navMarket)
-            //setFragment(MarketFragment())
+            setFragment(SMealStatusFragment())
         }
 
         navService.setOnClickListener {

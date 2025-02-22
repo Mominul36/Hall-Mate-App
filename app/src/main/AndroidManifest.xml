@@ -13,6 +13,13 @@
         android:theme="@style/Theme.HallMate"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.DayStatusUpdateActivity"
+            android:exported="true">
+
+
+
+        </activity>
+        <activity
             android:name=".Activity.DayMealStatusActivity"
             android:exported="false" />
         <activity
@@ -20,7 +27,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.MStudentActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Activity.MProfileActivity"
             android:exported="true" />
@@ -33,6 +40,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".Activity.ProvostHomeActivity"

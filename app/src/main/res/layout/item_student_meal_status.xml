@@ -7,97 +7,104 @@
     >
 
 
-    <RelativeLayout
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:orientation="vertical"
-        android:background="@drawable/item_day_status_background"
-        >
-
-
-        <TextView
-            android:id="@+id/txtDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="25"
-            android:textSize="24sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"
-            />
-
-
-    </RelativeLayout>
-
-
-
     <LinearLayout
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/item_day_status_background"
-        android:gravity="center"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:background="@drawable/item_day_status_background"
+            android:gravity="center"
+            >
+
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bItemStatus"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:background="@drawable/item_day_status_background"
+            android:gravity="center"
+            >
             <ImageView
-                android:id="@+id/bStatus"
+                android:id="@+id/bBtnStatus"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/image_select_background"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_tikmark"
 
                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lItemStatus"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:background="@drawable/item_day_status_background"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/lBtnStatus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/image_select_background"
+                android:layout_gravity="center"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dItemStatus"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:background="@drawable/item_day_status_background"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/dBtnStatus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/image_select_background"
+                android:layout_gravity="center"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sItemStatus"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:background="@drawable/item_day_status_background"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/sBtnStatus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/image_select_background"
+                android:layout_gravity="center"
+
+                />
+        </LinearLayout>
+
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/item_day_status_background"
-        android:gravity="center"
-        >
-        <ImageView
-            android:id="@+id/lStatus"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/image_select_background"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_tikmark"
-
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/item_day_status_background"
-        android:gravity="center"
-        >
-        <ImageView
-            android:id="@+id/dStatus"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/image_select_background"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_tikmark"
-
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/item_day_status_background"
-        android:gravity="center"
-        >
-        <ImageView
-            android:id="@+id/sStatus"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/image_select_background"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_tikmark"
-
-            />
-    </LinearLayout>
 
 
 
