@@ -88,7 +88,7 @@ class StudentLoginActivity : AppCompatActivity(), DialogDismissListener {
                 if (snapshot.exists()) {
                     val student = snapshot.getValue(Student::class.java)
                     if(student!=null){
-                        signIn(student.email.toString(),password)
+                        signIn(student,password)
                     }
                 } else {
                     load.end()
@@ -115,10 +115,35 @@ class StudentLoginActivity : AppCompatActivity(), DialogDismissListener {
         TODO("Not yet implemented")
     }
 
-    private fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
+    private fun signIn(student: Student, password: String) {
+        auth.signInWithEmailAndPassword(student.email.toString(), password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    var sharedPreferences = getSharedPreferences("HallMatePreferences", MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.clear().apply()
+
+
+                    editor.putString("hallId", student.hallId)
+                    editor.putString("studentId", student.studentId)
+                    editor.putString("name", student.name)
+                    editor.putString("email", student.email)
+                    editor.putString("phone", student.phone)
+                    editor.putString("department", student.department)
+                    editor.putString("batch", student.batch)
+                    editor.putString("roomNo", student.roomNo)
+                    editor.putBoolean("isCommitteeMember", student.isCommitteeMember ?: false)
+                    editor.putFloat("dueAmount", student.dueAmount?.toFloat() ?: 0.0f)
+                    editor.putString("key", student.key)
+                    editor.putString("profilePic", student.profilePic)
+                    editor.putString("password", student.password)
+                    editor.putString("mealCode", student.mealCode)
+                    editor.putBoolean("isStart", student.isStart ?: false)
+                    editor.putBoolean("isMutton", student.isMutton ?: false)
+
+                    editor.apply()
+
+
                       load.end()
                         val intent = Intent(this, StudentHomeActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

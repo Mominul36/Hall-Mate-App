@@ -21,6 +21,7 @@ import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Model.DayMealStatus
 import com.example.hallmate.Model.Hall
 import com.example.hallmate.Model.Management
+import com.example.hallmate.Model.Student
 import com.example.hallmate.databinding.ActivityMainBinding
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -56,26 +57,134 @@ class MainActivity : AppCompatActivity() {
 
         checkAuthentication()
 
+       // bal()
+
 
 
 
     }
 
-    fun bal2(){
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword("mominul2@gmail.com", "adfsdf546")
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.e("Firebase", "Registration successful!")
 
-                } else {
-                    val errorMessage = task.exception?.message
-                    Log.e("Firebase", "Registration failed: $errorMessage")
+    private fun checkAuthentication() {
+        binding.main.visibility = View.GONE
+        load.start()
+        var sharedPreferences = getSharedPreferences("HallMatePreferences", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear().apply()
+        val user = auth.currentUser
+        if(user!=null){
+            val email = user.email.toString()
+            val key = email.substringBefore("@")
+
+            val databaseRef = database.getReference("Management")
+            databaseRef.child(key).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        var user = snapshot.getValue(Management::class.java)
+                        if(user!=null){
+
+                            editor.putString("name",user.name)
+                            editor.putString("email",user.email)
+                            editor.putString("phone",user.phone)
+                            editor.putString("designation",user.designation)
+                            editor.putString("userType",user.userType)
+                            editor.putString("profilePic",user.profilePic)
+                            editor.apply()
+
+                            if(user.userType=="1"){
+                                startActivity(Intent(this@MainActivity, ProvostHomeActivity::class.java))
+                                finish()
+                                return
+
+                            }else{
+
+                                startActivity(Intent(this@MainActivity, ManagerHomeActivity::class.java))
+                                finish()
+                                return
+
+                            }
+                        }
+                    }
+                    else {
+
+
+                        //Student Login
+
+                        val studentRef = database.getReference("Student")
+
+                        studentRef.orderByChild("email").equalTo(email)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        for (childSnapshot in snapshot.children) {
+                                            val student = childSnapshot.getValue(Student::class.java)
+
+                                            if(student!=null){
+                                                editor.putString("hallId", student.hallId)
+                                                editor.putString("studentId", student.studentId)
+                                                editor.putString("name", student.name)
+                                                editor.putString("email", student.email)
+                                                editor.putString("phone", student.phone)
+                                                editor.putString("department", student.department)
+                                                editor.putString("batch", student.batch)
+                                                editor.putString("roomNo", student.roomNo)
+                                                editor.putBoolean("isCommitteeMember", student.isCommitteeMember ?: false)
+                                                editor.putFloat("dueAmount", student.dueAmount?.toFloat() ?: 0.0f)
+                                                editor.putString("key", student.key)
+                                                editor.putString("profilePic", student.profilePic)
+                                                editor.putString("password", student.password)
+                                                editor.putString("mealCode", student.mealCode)
+                                                editor.putBoolean("isStart", student.isStart ?: false)
+                                                editor.putBoolean("isMutton", student.isMutton ?: false)
+
+                                                editor.apply()
+
+
+
+                                                startActivity(Intent(this@MainActivity, StudentHomeActivity::class.java))
+                                                finish()
+                                                return
+
+                                            }
+
+
+
+                                        }
+                                    } else {
+                                      //  Log.d("FirebaseData", "No student found with this email")
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    //Log.e("FirebaseData", "Error: ${error.message}")
+                                }
+                            })
+
+
+
+
+
+
+
+
+
+
+                    }
                 }
-            }
+                override fun onCancelled(error: DatabaseError) {
+                    load.end()
+                    Toast.makeText(this@MainActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
 
-
+        load.end()
+        binding.main.visibility = View.VISIBLE
 
     }
+
+
+
 
     private fun bal() {
         val databaseRef = database.getReference("DayMealStatus")
@@ -134,15 +243,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -227,67 +327,5 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private fun checkAuthentication() {
-        binding.main.visibility = View.GONE
-        load.start()
-        var sharedPreferences = getSharedPreferences("HallMatePreferences", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val user = auth.currentUser
-        if(user!=null){
-            val email = user.email.toString()
-            val key = email.substringBefore("@")
 
-            val databaseRef = database.getReference("Management")
-            databaseRef.child(key).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        var user = snapshot.getValue(Management::class.java)
-                        if(user!=null){
-
-                            editor.putString("name",user.name)
-                            editor.putString("email",user.email)
-                            editor.putString("phone",user.phone)
-                            editor.putString("designation",user.designation)
-                            editor.putString("userType",user.userType)
-                            editor.putString("profilePic",user.profilePic)
-                            editor.apply()
-
-                            if(user.userType=="1"){
-                                startActivity(Intent(this@MainActivity, ProvostHomeActivity::class.java))
-                                finish()
-                                return
-
-                            }else{
-
-                                startActivity(Intent(this@MainActivity, ManagerHomeActivity::class.java))
-                                finish()
-                                return
-
-                            }
-                        }
-                    }
-                    else {
-
-
-                        //Student Login
-
-                        startActivity(Intent(this@MainActivity, StudentHomeActivity::class.java))
-                        finish()
-                        return
-
-
-
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    load.end()
-                    Toast.makeText(this@MainActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
-
-        load.end()
-        binding.main.visibility = View.VISIBLE
-
-    }
 }
