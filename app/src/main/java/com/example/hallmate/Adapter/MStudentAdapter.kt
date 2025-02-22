@@ -10,26 +10,32 @@ import com.example.hallmate.Activity.MStudentProfileActivity
 import com.example.hallmate.Model.Student
 import com.example.hallmate.R
 
-class StudentRequestAdapter(
+class MStudentAdapter(
     private val studentList: ArrayList<Student>,
-) : RecyclerView.Adapter<StudentRequestAdapter.StudentRequestViewHolder>() {
+) : RecyclerView.Adapter<MStudentAdapter.MStudentViewHolder>() {
 
-    class StudentRequestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MStudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val room: TextView = itemView.findViewById(R.id.room)
         val id: TextView = itemView.findViewById(R.id.id)
         val name: TextView = itemView.findViewById(R.id.name)
+        val hallId: TextView = itemView.findViewById(R.id.hallId)
+        val dept: TextView = itemView.findViewById(R.id.dept)
+        val batch: TextView = itemView.findViewById(R.id.batch)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentRequestViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_student_request, parent, false)
-        return StudentRequestViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MStudentViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_student, parent, false)
+        return MStudentViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: StudentRequestViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MStudentViewHolder, position: Int) {
         val student = studentList[position]
         holder.room.text = "${student.roomNo}"
         holder.id.text = "${student.studentId}"
         holder.name.text = student.name
+        holder.hallId.text = student.hallId
+        holder.dept.text = student.department
+        holder.batch.text = student.batch
 
         // Set onClickListener to navigate to the student detail activity
         holder.itemView.setOnClickListener {
@@ -50,7 +56,7 @@ class StudentRequestAdapter(
                 putExtra("profilePic", student.profilePic)
                 putExtra("password", student.password)
                 putExtra("mealCode", student.mealCode)
-                putExtra("message", "student_request")
+                putExtra("message", "current_student")
             }
             context.startActivity(intent)
         }

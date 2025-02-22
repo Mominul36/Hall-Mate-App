@@ -177,6 +177,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/dueAmountLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

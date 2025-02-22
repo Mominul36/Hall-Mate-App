@@ -12,6 +12,7 @@ class StudentViewPagerAdapter(activity: MStudentActivity) : FragmentStateAdapter
     private val fragmentList = listOf(
         MStudentRequestFragment(),
         MCurrentStudentFragment()
+
     )
     override fun getItemCount(): Int = fragmentList.size
 

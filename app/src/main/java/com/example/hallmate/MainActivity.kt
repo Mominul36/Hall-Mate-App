@@ -2,7 +2,10 @@ package com.example.hallmate
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,12 +14,18 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.hallmate.Activity.ManagementLoginActivity
 import com.example.hallmate.Activity.ManagerHomeActivity
 import com.example.hallmate.Activity.ProvostHomeActivity
+import com.example.hallmate.Activity.StudentHomeActivity
 import com.example.hallmate.Activity.StudentLoginActivity
+import com.example.hallmate.Class.Loading
+import com.example.hallmate.Class.Loading2
+import com.example.hallmate.Model.DayMealStatus
+import com.example.hallmate.Model.Hall
 import com.example.hallmate.Model.Management
 import com.example.hallmate.databinding.ActivityMainBinding
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -27,22 +36,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding : ActivityMainBinding
     lateinit var auth: FirebaseAuth
     private var database = FirebaseDatabase.getInstance()
+    lateinit var load : Loading2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        load = Loading2(this)
 
         auth = FirebaseAuth.getInstance()
-
-
-        checkAuthentication()
-
-
-
-
-
         binding.sLogin.setOnClickListener{
             startActivity(Intent(this, StudentLoginActivity::class.java))
         }
@@ -51,10 +54,100 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ManagementLoginActivity::class.java))
         }
 
+        checkAuthentication()
+
 
 
 
     }
+
+    fun bal2(){
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword("mominul2@gmail.com", "adfsdf546")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.e("Firebase", "Registration successful!")
+
+                } else {
+                    val errorMessage = task.exception?.message
+                    Log.e("Firebase", "Registration failed: $errorMessage")
+                }
+            }
+
+
+
+    }
+
+    private fun bal() {
+        val databaseRef = database.getReference("DayMealStatus")
+
+
+        for (d in 1..31) {
+
+            var day:String = d.toString()
+            if(d<10){
+                day = "0"+day
+            }
+
+            var month = "05-2025"
+
+
+            val dayStatusb = DayMealStatus(day.toString(),"BreakFast",true,false,false,
+                0.0,0.0,0.0,0)
+            val dayStatusl = DayMealStatus(day.toString(),"Lunch",true,false,false,
+                0.0,0.0,0.0,0)
+            val dayStatusd = DayMealStatus(day.toString(),"Dinner",true,false,false,
+                0.0,0.0,0.0,0)
+
+
+            databaseRef.child(month).child(day.toString()).child("BreakFast")
+                .setValue(dayStatusb).addOnSuccessListener {
+                  //  Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+                }
+
+            databaseRef.child(month).child(day.toString()).child("Lunch")
+                .setValue(dayStatusl).addOnSuccessListener {
+                    //Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+                }
+
+            databaseRef.child(month).child(day.toString()).child("Dinner")
+                .setValue(dayStatusd).addOnSuccessListener {
+                 //   Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+                }
+
+
+            databaseRef.child(month).child(day.toString()).child("isRamadan")
+                .setValue(false).addOnSuccessListener {
+                    //  Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+                }
+
+        }
+
+        Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private fun createUser(email: String, password: String) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { authResult ->
@@ -135,6 +228,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkAuthentication() {
+        binding.main.visibility = View.GONE
+        load.start()
         var sharedPreferences = getSharedPreferences("HallMatePreferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val user = auth.currentUser
@@ -160,9 +255,14 @@ class MainActivity : AppCompatActivity() {
                             if(user.userType=="1"){
                                 startActivity(Intent(this@MainActivity, ProvostHomeActivity::class.java))
                                 finish()
+                                return
+
                             }else{
+
                                 startActivity(Intent(this@MainActivity, ManagerHomeActivity::class.java))
                                 finish()
+                                return
+
                             }
                         }
                     }
@@ -171,14 +271,23 @@ class MainActivity : AppCompatActivity() {
 
                         //Student Login
 
+                        startActivity(Intent(this@MainActivity, StudentHomeActivity::class.java))
+                        finish()
+                        return
+
 
 
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
+                    load.end()
                     Toast.makeText(this@MainActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })
         }
+
+        load.end()
+        binding.main.visibility = View.VISIBLE
+
     }
 }

@@ -49,7 +49,7 @@ class MStudentRequestFragment : Fragment() {
         // RecyclerView setup with vertical scrolling
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         studentList = ArrayList()
-        studentRequestAdapter = StudentRequestAdapter(studentList,"student_request")
+        studentRequestAdapter = StudentRequestAdapter(studentList)
         binding.recyclerView.adapter = studentRequestAdapter
 
         // Fetch data from Firebase

@@ -1,134 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.StudentLoginActivity"
-    android:background="@color/bg_color"
-    android:orientation="vertical"
-    android:gravity="center"
-    >
+    android:background="@drawable/login_bk"
+    android:focusableInTouchMode="true">
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textColor="@color/black"
-        android:textSize="38sp"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:layout_marginBottom="30dp"
-        android:fontFamily="monospace"
-        />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
 
-    <EditText
-        android:id="@+id/hall_id"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/temp_edit"
-        android:layout_marginHorizontal="20dp"
-        android:hint="Hall Id"
-        android:textSize="24sp"
-        android:paddingHorizontal="10dp"
-        android:textColor="@color/black"
-        android:inputType="numberDecimal"
-        />
-
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/temp_edit"
-        android:layout_marginHorizontal="20dp"
-        android:hint="Password"
-        android:textSize="24sp"
-        android:paddingHorizontal="10dp"
-        android:textColor="@color/black"
-        android:inputType="textWebPassword"
-        android:layout_marginTop="15dp"
-        />
-
-
-
+       >
         <TextView
-            android:id="@+id/go_to_reset_password"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="Forget Password?"
-            android:textColor="#03188A"
-            android:textSize="18sp"
-            android:layout_gravity="end"
-            android:textStyle="bold"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            />
+            android:layout_height="wrap_content"
+            style="@style/loginHeader"
+            android:text="Login"
+            android:layout_marginTop="@dimen/loginViewsMargin"/>
+
+        <LinearLayout
+            android:id="@+id/textInputEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:orientation="vertical"
+            >
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hall Id"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:textColor="@color/base_color"
+                android:textSize="15dp"
+                />
+
+            <EditText
+                android:id="@+id/hallId"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:hint="Hall Id"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textSize="18dp"
+                android:backgroundTint="@color/base_color"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/textInputPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/loginViewsMargin">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textColor="@color/base_color"
+                android:textSize="15dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/password"
+                    android:hint="@string/login_password_hint"
+                    android:inputType="textPassword"
+                    android:textSize="18dp"
+                    android:backgroundTint="@color/base_color"
+                    />
 
 
+                <ImageView
+                    android:id="@+id/passHiddenIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_hide"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    />
 
 
+            </RelativeLayout>
 
 
+            <TextView
+                android:id="@+id/forgotPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:textStyle="bold"
+                android:textColor="@color/base_color"
+                android:text="Forgot Password?"
+                android:layout_marginTop="10dp"
+              />
 
+
+        </LinearLayout>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@android:style/Widget.Button"
         android:text="Login"
-        android:background="@drawable/button_background"
+        android:background="@drawable/button_background_login"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
+        android:paddingHorizontal="60dp"
+        android:paddingVertical="15dp"
+        android:layout_alignParentRight="true"
         />
 
 
+</RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_gravity="start"
-            android:layout_weight="0.3"
-            android:text="Don't have any Account? "
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+
+
+
+
 
         <TextView
-            android:id="@+id/go_to_register"
+            android:id="@+id/goToRegister"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_weight="0.6"
-            android:text="Register"
-            android:textColor="#03188A"
-            android:textSize="18sp"
-            android:layout_gravity="start"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
             android:textStyle="bold"
-            />
-
-
+            android:textColor="@color/base_color"
+            android:text="Don't have an account? Sign Up"
+            android:layout_marginTop="@dimen/loginViewsMargin"/>
 
     </LinearLayout>
 
-
-
-
-
-
-
-
-</LinearLayout>
+</RelativeLayout>

@@ -15,7 +15,7 @@ class Loading(
     fun start(){
         dialog.setContentView(R.layout.dialog_loading)
         dialog.setCancelable(false)
-       dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
     }
 

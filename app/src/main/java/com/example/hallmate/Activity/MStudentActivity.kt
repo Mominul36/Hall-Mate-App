@@ -21,12 +21,14 @@ class MStudentActivity : AppCompatActivity() {
 
         val adapter = StudentViewPagerAdapter(this)
         binding.viewPager.adapter = adapter
+
         val tabTitles = arrayOf("Student Request", "Student List")
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
 
-        binding.viewPager.isUserInputEnabled = true
+        binding.viewPager.isUserInputEnabled = false
+
 
 
         binding.back.setOnClickListener{

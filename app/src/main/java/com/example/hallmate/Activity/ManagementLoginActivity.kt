@@ -2,10 +2,14 @@ package com.example.hallmate.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.hallmate.Class.Loading
+import com.example.hallmate.Class.SuccessDialog
 import com.example.hallmate.Model.Management
+import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityManagementLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -19,21 +23,47 @@ class ManagementLoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagementLoginBinding
     private lateinit var auth: FirebaseAuth
 
+    lateinit var load : Loading
+
+    var flagPass = false
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityManagementLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        load = Loading(this)
         auth = FirebaseAuth.getInstance()
 
         binding.login.setOnClickListener {
             checkUserExists()
         }
+
+
+        binding.passHiddenIcon.setImageResource(R.drawable.ic_hide)
+        binding.passHiddenIcon.setOnClickListener {
+            if (flagPass) {
+                binding.password.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.passHiddenIcon.setImageResource(R.drawable.ic_hide)
+            } else {
+                binding.password.transformationMethod = null
+                binding.passHiddenIcon.setImageResource(R.drawable.show)
+            }
+
+            binding.password.setSelection(binding.password.text.length)
+            flagPass = !flagPass
+        }
+
+
+
+
+
     }
 
 
     private fun checkUserExists(){
+
         val databaseRef = FirebaseDatabase.getInstance().getReference("Management")
         val email = binding.email.text.toString().trim()
         val password = binding.password.text.toString().trim()
@@ -44,6 +74,7 @@ class ManagementLoginActivity : AppCompatActivity() {
             return
         }
 
+        load.start()
         databaseRef.child(key).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -54,12 +85,14 @@ class ManagementLoginActivity : AppCompatActivity() {
                     }
                 } else {
                     // User not found, show an error message
+                    load.end()
                     Toast.makeText(this@ManagementLoginActivity, "User not found!", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
                 // Handle database errors
-                Toast.makeText(this@ManagementLoginActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
+                load.end()
+                Toast.makeText(this@ManagementLoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -70,6 +103,7 @@ class ManagementLoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    load.end()
                     if(user.userType=="1"){
                         val intent = Intent(this, ProvostHomeActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -99,6 +133,7 @@ class ManagementLoginActivity : AppCompatActivity() {
                         is FirebaseAuthInvalidCredentialsException -> "Wrong password"
                         else -> task.exception?.message ?: "Login failed"
                     }
+                    load.end()
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }

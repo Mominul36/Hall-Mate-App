@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.bsh.commands.dir
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -66,6 +68,16 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+   //implementation("org.apache.poi:poi-ooxml:5.2.3")
+
+    //implementation("org.apache.poi:poi-ooxml-lite:5.2.3")
+
+    implementation("net.sourceforge.jexcelapi:jxl:2.6.12")
+
+
+
+
 
 
 }

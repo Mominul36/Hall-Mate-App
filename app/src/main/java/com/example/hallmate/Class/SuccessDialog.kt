@@ -11,22 +11,26 @@ import android.widget.TextView
 import com.example.hallmate.R
 
 interface DialogDismissListener {
-    fun onDialogDismissed()
+    fun onDialogDismissed(message: String)
 }
 
 class SuccessDialog(
     private val context: Context,
-    private val title: String,
-    private val message: String,
     private val listener: DialogDismissListener
 ) {
 
     val dialog = Dialog(context)
-    var bl:Boolean = true
+    var isAutoCancel:Boolean = true
+    var ins = ""
 
-    fun show() {
+    fun show(title: String, message: String,autoCancel :Boolean,ins:String) {
+
+        isAutoCancel = autoCancel
         dialog.setContentView(R.layout.dialog_success)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
 
         val txtTitle = dialog.findViewById<TextView>(R.id.title)
         val txtMessage = dialog.findViewById<TextView>(R.id.message)
@@ -37,17 +41,16 @@ class SuccessDialog(
 
         // Auto dismiss after 3 seconds and notify listener
         Handler(Looper.getMainLooper()).postDelayed({
-            if(bl){
+            if(isAutoCancel){
                 dialog.dismiss()
-                listener.onDialogDismissed()  // Notify when the dialog is dismissed
+                listener.onDialogDismissed(ins)  // Notify when the dialog is dismissed
             }
         }, 3000)
 
-        // Dismiss on button click and notify listener
         okBtn.setOnClickListener {
-            bl = false
+            isAutoCancel = false
             dialog.dismiss()
-            listener.onDialogDismissed()  // Notify when the dialog is dismissed
+            listener.onDialogDismissed(ins)  // Notify when the dialog is dismissed
         }
 
         dialog.show()

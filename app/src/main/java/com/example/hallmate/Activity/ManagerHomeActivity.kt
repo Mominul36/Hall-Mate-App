@@ -226,6 +226,11 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 startActivity(Intent(this, MStudentActivity::class.java))
             }
 
+            R.id.nav_day_meal_status -> {
+//                supportFragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment()).commit()
+                startActivity(Intent(this, DayMealStatusActivity::class.java))
+            }
+
             R.id.nav_logout -> {
                 auth.signOut()
                 startActivity(Intent(this, MainActivity::class.java))

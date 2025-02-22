@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    >
+
+
+    <RelativeLayout
+        android:layout_width="130dp"
+        android:layout_height="155dp"
+        android:orientation="vertical"
+        android:background="@drawable/item_day_status_background"
+        >
+
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="25"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            />
+
+        <Switch
+            android:id="@+id/swRamadan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ramadan "
+            android:layout_below="@id/txtDate"
+            android:layout_centerHorizontal="true"
+            />
+
+
+        <ImageView
+            android:id="@+id/btnSave"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_save"
+            />
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/item_day_status_background"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            >
+            <ImageView
+                android:id="@+id/bBtnStatus"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                android:layout_gravity="center"
+                android:layout_marginRight="12dp"
+                android:src="@drawable/ic_tikmark"
+                />
+            <ImageView
+                android:id="@+id/bBtnIsBeafOrMutton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                android:layout_marginRight="12dp"
+               />
+            <ImageView
+                android:id="@+id/bBtnIsAutoMeal"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/bEditMealCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                 android:background="@drawable/item_day_status_background"
+                 android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+
+            <EditText
+                android:id="@+id/bEditFuelCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+
+            <EditText
+                android:id="@+id/bEditExtraMuttonCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/item_day_status_background"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            >
+            <ImageView
+                android:id="@+id/lBtnStatus"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                android:layout_gravity="center"
+                android:layout_marginRight="12dp"
+                />
+            <ImageView
+                android:id="@+id/lBtnIsBeafOrMutton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                android:layout_marginRight="12dp"
+                />
+            <ImageView
+                android:id="@+id/lBtnIsAutoMeal"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/lEditMealCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+
+            <EditText
+                android:id="@+id/lEditFuelCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+
+            <EditText
+                android:id="@+id/lEditExtraMuttonCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/item_day_status_background"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            >
+            <ImageView
+                android:id="@+id/dBtnStatus"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                android:layout_gravity="center"
+                android:layout_marginRight="12dp"
+                />
+            <ImageView
+                android:id="@+id/dBtnIsBeafOrMutton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                android:layout_marginRight="12dp"
+                />
+            <ImageView
+                android:id="@+id/dBtnIsAutoMeal"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/image_select_background"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/dEditMealCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+
+            <EditText
+                android:id="@+id/dEditFuelCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+
+            <EditText
+                android:id="@+id/dEditExtraMuttonCost"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/item_day_status_background"
+                android:textColor="@color/black"
+                android:paddingHorizontal="5dp"
+                android:textSize="18sp"
+                android:inputType="numberDecimal"
+                />
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>
