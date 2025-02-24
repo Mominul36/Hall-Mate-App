@@ -11,7 +11,6 @@ import com.example.hallmate.Adapter.DayMealStatusAdapter
 import com.example.hallmate.Adapter.StudentRequestAdapter
 import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Model.DayMealStatus
-import com.example.hallmate.Model.DayMealStatusForRecycler
 import com.example.hallmate.Model.Student
 import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityDayMealStatusBinding
@@ -30,8 +29,8 @@ class DayMealStatusActivity : AppCompatActivity() {
     lateinit var binding : ActivityDayMealStatusBinding
     lateinit var auth: FirebaseAuth
     private var database = FirebaseDatabase.getInstance()
-    private lateinit var dayMealStatusForRecyclerAdapter: DayMealStatusAdapter
-    private lateinit var dayMealStatusForRecyclerList: ArrayList<DayMealStatusForRecycler>
+    private lateinit var dayMealStatusAdapter: DayMealStatusAdapter
+    private lateinit var dayMealStatusList: ArrayList<DayMealStatus>
 
     lateinit var load : Loading2
 
@@ -49,9 +48,9 @@ class DayMealStatusActivity : AppCompatActivity() {
 
         // RecyclerView setup with vertical scrolling
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        dayMealStatusForRecyclerList = ArrayList()
-        dayMealStatusForRecyclerAdapter = DayMealStatusAdapter(this,dayMealStatusForRecyclerList)
-        binding.recyclerView.adapter = dayMealStatusForRecyclerAdapter
+        dayMealStatusList = ArrayList()
+        dayMealStatusAdapter = DayMealStatusAdapter(this,dayMealStatusList)
+        binding.recyclerView.adapter = dayMealStatusAdapter
 
 
         fetchDayMealStatus(getCurrentMonth())
@@ -134,51 +133,22 @@ class DayMealStatusActivity : AppCompatActivity() {
         val monthReference = database.getReference("DayMealStatus").child(month)
         monthReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                dayMealStatusForRecyclerList.clear()
+                dayMealStatusList.clear()
 
                 for (dateSnapshot in snapshot.children) {
-                    val date = dateSnapshot.key // get the date key (e.g., "2024-02-15")
+                    val date = dateSnapshot.key
 
-                    val isRamadan = dateSnapshot.child("isRamadan").getValue(Boolean::class.java) ?: false
-
-                    val breakFast = dateSnapshot.child("BreakFast").getValue(DayMealStatus::class.java)
-                    val lunch = dateSnapshot.child("Lunch").getValue(DayMealStatus::class.java)
-                    val dinner = dateSnapshot.child("Dinner").getValue(DayMealStatus::class.java)
+                    val DayMealStatus = dateSnapshot.getValue(DayMealStatus::class.java)
 
                     // Only add the data for that date once
-                    if (breakFast != null || lunch != null || dinner != null) {
-                        val dayMealStatusForRecycler = DayMealStatusForRecycler(
-                            date = date,
-                            month = month,
-                            isRamadan = isRamadan,
-                            bstatus = breakFast?.status,
-                            bisMuttonOrBeaf = breakFast?.isMuttonOrBeaf,
-                            bisAutoMeal = breakFast?.isAutoMeal,
-                            bmealCost = breakFast?.mealCost,
-                            bfuelCost = breakFast?.fuelCost,
-                            bextraMuttonCost = breakFast?.extraMuttonCost,
+                    if (DayMealStatus != null) {
 
-                            lstatus = lunch?.status,
-                            lisMuttonOrBeaf = lunch?.isMuttonOrBeaf,
-                            lisAutoMeal = lunch?.isAutoMeal,
-                            lmealCost = lunch?.mealCost,
-                            lfuelCost = lunch?.fuelCost,
-                            lextraMuttonCost = lunch?.extraMuttonCost,
-
-                            dstatus = dinner?.status,
-                            disMuttonOrBeaf = dinner?.isMuttonOrBeaf,
-                            disAutoMeal = dinner?.isAutoMeal,
-                            dmealCost = dinner?.mealCost,
-                            dfuelCost = dinner?.fuelCost,
-                            dextraMuttonCost = dinner?.extraMuttonCost
-                        )
-
-                        dayMealStatusForRecyclerList.add(dayMealStatusForRecycler)
+                        dayMealStatusList.add(DayMealStatus)
                     }
                 }
 
                 // Notify the adapter that the data has changed
-                dayMealStatusForRecyclerAdapter.notifyDataSetChanged()
+                dayMealStatusAdapter.notifyDataSetChanged()
                 load.end()
             }
 

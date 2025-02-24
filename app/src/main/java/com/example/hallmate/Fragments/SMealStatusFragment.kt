@@ -12,10 +12,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hallmate.Adapter.DayMealStatusAdapter
 import com.example.hallmate.Adapter.SMealStatusAdapter
+import com.example.hallmate.Class.DialogDismissListener
 import com.example.hallmate.Class.Loading
 import com.example.hallmate.Class.Loading2
+import com.example.hallmate.Class.SuccessDialog
 import com.example.hallmate.Model.DayMealStatus
-import com.example.hallmate.Model.DayMealStatusForRecycler
 import com.example.hallmate.Model.Meal
 import com.example.hallmate.Model.MealForRV
 import com.example.hallmate.R
@@ -30,15 +31,18 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class SMealStatusFragment : Fragment() {
+class SMealStatusFragment : Fragment(), DialogDismissListener {
 
     private lateinit var binding: FragmentSMealStatusBinding
     lateinit var auth: FirebaseAuth
     private var database = FirebaseDatabase.getInstance()
     private lateinit var sMealStatusAdapter: SMealStatusAdapter
     private lateinit var mealForRVList: ArrayList<MealForRV>
-    lateinit var load : Loading2
+    lateinit var load2 : Loading2
+    lateinit var load : Loading
+    lateinit var success : SuccessDialog
     var hallId :String = ""
+    var searchMonth :String = ""
 
     val array = Array(32) { i -> String.format("%02d", i) }
 
@@ -49,9 +53,15 @@ class SMealStatusFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSMealStatusBinding.inflate(inflater, container, false)
-        load = Loading2(requireContext())
+        load2 = Loading2(requireContext())
+        load = Loading(requireContext())
         auth = FirebaseAuth.getInstance()
+        success = SuccessDialog(requireContext(), this)
 
+
+        binding.save.setOnClickListener {
+            saveUpdatedData()
+        }
 
 
 
@@ -64,26 +74,27 @@ class SMealStatusFragment : Fragment() {
 
 
         setButtonStatus(getCurrentMonth())
-
         fetchStudentMealStatus(getCurrentMonth())
 
 
         binding.feb25.setOnClickListener{
             setButtonStatus("02-2025")
             fetchStudentMealStatus("02-2025")
-          //  fetchDayMealStatus("02-2025")
 
         }
         binding.mar25.setOnClickListener{
             setButtonStatus("03-2025")
-            fetchStudentMealStatus("03-2025")        }
+            fetchStudentMealStatus("03-2025")
+        }
 
         binding.apr25.setOnClickListener{
             setButtonStatus("04-2025")
-            fetchStudentMealStatus("04-2025")        }
+            fetchStudentMealStatus("04-2025")
+        }
         binding.may25.setOnClickListener{
             setButtonStatus("05-2025")
-            fetchStudentMealStatus("05-2025")        }
+            fetchStudentMealStatus("05-2025")
+        }
 
 
 
@@ -100,80 +111,142 @@ class SMealStatusFragment : Fragment() {
 
     }
 
+    private fun saveUpdatedData() {
+        load.start()
+
+        val updatedData = sMealStatusAdapter.getUpdatedMealData()
+        var databaseRef = database.getReference("Meal").child(searchMonth).child(hallId)
+
+        for (mealForRV in updatedData) {
+
+            val meal: Map<String, Any?> = mapOf(
+                "isSahari" to mealForRV.isSahari ,
+                "bstatus" to mealForRV.bstatus,
+                "lstatus" to mealForRV.lstatus,
+                "dstatus" to mealForRV.dstatus
+            )
+
+
+            databaseRef.child(mealForRV.date.toString()).updateChildren(meal)
+                .addOnSuccessListener {
+
+                }
+                .addOnFailureListener { exception ->
+                    load.end()
+                    Toast.makeText(context, "Failed to update: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+
+
+        }
+
+
+        load.end()
+        success.show("Success","Meal data updated successfully",true,"")
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     private fun fetchStudentMealStatus(month: String) {
+        searchMonth = month
         binding.main.visibility = View.GONE
         load.start()
         var sharedPreferences = requireContext().getSharedPreferences("HallMatePreferences", MODE_PRIVATE)
          hallId = sharedPreferences.getString("hallId","").toString()
 
-
-        val mealRef = database.getReference("Meal").child(month)
-        val dayStatusRef = database.getReference("DayMealStatus").child(month)
-
-        for(i in 1..31) {
-            mealForRVList.clear()
-            mealRef.child(array[i]).child(hallId)
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            val breakFast = snapshot.child("BreakFast").getValue(Meal::class.java)
-                            val lunch = snapshot.child("Lunch").getValue(Meal::class.java)
-                            val dinner = snapshot.child("Dinner").getValue(Meal::class.java)
-                            if (breakFast != null && lunch != null && dinner != null) {
+        val mealRef = database.getReference("Meal")
+        val dayStatusRef = database.getReference("DayMealStatus")
 
 
-                                dayStatusRef.child(array[i])
-                                    .addValueEventListener(object : ValueEventListener{
-                                        override fun onDataChange(daySnapshot: DataSnapshot) {
-                                            val breakFast2 = daySnapshot.child("BreakFast").getValue(DayMealStatus::class.java)
-                                            val lunch2 = daySnapshot.child("Lunch").getValue(DayMealStatus::class.java)
-                                            val dinner2 = daySnapshot.child("Dinner").getValue(DayMealStatus::class.java)
-                                            val isRamadan = daySnapshot.child("isRamadan").getValue(Boolean::class.java)
-
-
-                                            val mealForRV = MealForRV(month, array[i], hallId,
-                                                breakFast.status, dinner.status, lunch.status, lunch.isSahari,
-                                                isRamadan,breakFast2?.status,lunch2?.status,dinner2?.status,
-                                                breakFast2?.isAutoMeal,lunch2?.isAutoMeal,dinner2?.isAutoMeal,
-                                                false,false
-                                                )
-
-//                                            Log.d("MealData", breakFast2.toString())
-//                                            Log.d("MealData", lunch2.toString())
-//                                            Log.d("MealData", dinner2.toString())
-//                                            Log.d("MealData", isRamadan.toString())
-//                                            Log.d("MealData", mealForRV.toString())
-
-                                            mealForRVList.add(mealForRV)
-                                            sMealStatusAdapter.notifyDataSetChanged()
-                                            if(i==31){
-                                                load.end()
-                                                binding.main.visibility = View.VISIBLE
-
-                                            }
+        var mealList = mutableListOf<Meal>() // Meal Data Store করার জন্য List
 
 
 
+        mealRef.child(month).child(hallId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
 
-                                        }
-                                        override fun onCancelled(error: DatabaseError) {
-                                            Toast.makeText(requireContext(), "Failed: ${error.message}", Toast.LENGTH_SHORT).show()
-                                        }
-                                    })
-                            }
-                        } else {
-                            sMealStatusAdapter.notifyDataSetChanged()
-                            load.end()
-                            binding.main.visibility = View.VISIBLE
-
+                    mealList.clear()
+                    for (mealSnapshot in snapshot.children) {
+                        val meal = mealSnapshot.getValue(Meal::class.java)
+                        if (meal!=null) {
+                            mealList.add(meal)
                         }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(requireContext(), "Failed: ${error.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
 
-        }
+                        Log.d("FirebaseData", meal.toString())
+                    }
+
+
+
+                    var dayMealStatusList = mutableListOf<DayMealStatus>()
+
+                    dayStatusRef.child(month)
+                        .addValueEventListener(object: ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if(snapshot.exists()){
+
+
+                                dayMealStatusList.clear()
+
+                                for (dayStatusSnapshot in snapshot.children) {
+                                    val dayMealStatus = dayStatusSnapshot.getValue(DayMealStatus::class.java)
+                                    if (dayMealStatus!=null) {
+                                        dayMealStatusList.add(dayMealStatus)
+                                    }
+                                }
+
+                                mealForRVList.clear()
+                                var len:Int = dayMealStatusList.size-1
+
+                                for(i in 0..len){
+                                   var mealForRV = MealForRV(month,mealList[i].date,hallId,mealList[i].bstatus,mealList[i].lstatus,mealList[i].dstatus,
+                                       mealList[i].isSahari,dayMealStatusList[i].isRamadan,dayMealStatusList[i].bstatus,dayMealStatusList[i].lstatus,
+                                       dayMealStatusList[i].dstatus, dayMealStatusList[i].bisAutoMeal, dayMealStatusList[i].lisAutoMeal,dayMealStatusList[i].disAutoMeal,
+                                       false,false)
+
+                                    mealForRVList.add(mealForRV)
+
+
+                                }
+
+                                sMealStatusAdapter.notifyDataSetChanged()
+
+                                load.end()
+                                binding.main.visibility = View.VISIBLE
+
+                                }
+                            }///////
+
+                            override fun onCancelled(error: DatabaseError) {
+                                load.end()
+                               // binding.main.visibility = View.VISIBLE
+                                Toast.makeText(requireContext(),"Error: ${error.message}",Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                    }
+                }/////
+                override fun onCancelled(error: DatabaseError) {
+                    load.end()
+                   // binding.main.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(),"Error: ${error.message}",Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
+
 
 
 
@@ -224,6 +297,11 @@ class SMealStatusFragment : Fragment() {
         return dateFormat.format(currentDate)
     }
 
+    override fun onDialogDismissed(message: String) {
+
+
+
+    }
 
 
 }

@@ -16,14 +16,13 @@ import com.example.hallmate.Activity.MStudentProfileActivity
 import com.example.hallmate.Class.Loading
 import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Model.DayMealStatus
-import com.example.hallmate.Model.DayMealStatusForRecycler
 import com.example.hallmate.Model.Student
 import com.example.hallmate.R
 import com.google.firebase.database.FirebaseDatabase
 
 class DayMealStatusAdapter(
     private val context: Context,
-    private val dayMealStatusForRecyclerList: ArrayList<DayMealStatusForRecycler>,
+    private val dayMealStatusList: ArrayList<DayMealStatus>,
 ) : RecyclerView.Adapter<DayMealStatusAdapter.DayMealStatusViewHolder>() {
 
 
@@ -75,21 +74,21 @@ class DayMealStatusAdapter(
     }
 
     override fun onBindViewHolder(holder: DayMealStatusViewHolder, position: Int) {
-        val dayMealStatusForRecycler = dayMealStatusForRecyclerList[position]
+        val dayMealStatus = dayMealStatusList[position]
 
 
 
-        holder.txtDate.text = dayMealStatusForRecycler.date
-        holder.swRamadan.isChecked = dayMealStatusForRecycler.isRamadan ?: false
+        holder.txtDate.text = dayMealStatus.date
+        holder.swRamadan.isChecked = dayMealStatus.isRamadan ?: false
         holder.swRamadan.isClickable = false
 
-        if (dayMealStatusForRecycler.bstatus == true) {
+        if (dayMealStatus.bstatus == true) {
             holder.bBtnStatus.setImageResource(R.drawable.ic_tikmark)
         } else {
             holder.bBtnStatus.setImageDrawable(null) // Remove image if not checked
         }
 
-        if (dayMealStatusForRecycler.bisMuttonOrBeaf == true) {
+        if (dayMealStatus.bisMuttonOrBeaf == true) {
             holder.bBtnIsBeafOrMutton.setImageResource(R.drawable.ic_tikmark)
 
         } else {
@@ -97,25 +96,25 @@ class DayMealStatusAdapter(
             holder.bEditExtraMuttonCost.isEnabled  = false
         }
 
-        if (dayMealStatusForRecycler.bisAutoMeal == true) {
+        if (dayMealStatus.bisAutoMeal == true) {
             holder.bBtnIsAutoMeal.setImageResource(R.drawable.ic_tikmark) // set auto meal image
         } else {
             holder.bBtnIsAutoMeal.setImageDrawable(null) // Remove image if not checked
         }
 
         // Set the meal costs
-        holder.bEditMealCost.setText(dayMealStatusForRecycler.bmealCost?.toString() ?: "")
-        holder.bEditFuelCost.setText(dayMealStatusForRecycler.bfuelCost?.toString() ?: "")
-        holder.bEditExtraMuttonCost.setText(dayMealStatusForRecycler.bextraMuttonCost?.toString() ?: "")
+        holder.bEditMealCost.setText(dayMealStatus.bmealCost?.toString() ?: "")
+        holder.bEditFuelCost.setText(dayMealStatus.bfuelCost?.toString() ?: "")
+        holder.bEditExtraMuttonCost.setText(dayMealStatus.bextraMuttonCost?.toString() ?: "")
 
         // Set the lunch status and other values
-        if (dayMealStatusForRecycler.lstatus == true) {
+        if (dayMealStatus.lstatus == true) {
             holder.lBtnStatus.setImageResource(R.drawable.ic_tikmark)
         } else {
             holder.lBtnStatus.setImageDrawable(null) // Remove image if not checked
         }
 
-        if (dayMealStatusForRecycler.lisMuttonOrBeaf == true) {
+        if (dayMealStatus.lisMuttonOrBeaf == true) {
             holder.lBtnIsBeafOrMutton.setImageResource(R.drawable.ic_tikmark) // set mutton or beef image
 
         } else {
@@ -123,7 +122,7 @@ class DayMealStatusAdapter(
             holder.lEditExtraMuttonCost.isEnabled  = false
         }
 
-        if (dayMealStatusForRecycler.lisAutoMeal == true) {
+        if (dayMealStatus.lisAutoMeal == true) {
             holder.lBtnIsAutoMeal.setImageResource(R.drawable.ic_tikmark) // set auto meal image
 
         } else {
@@ -131,19 +130,19 @@ class DayMealStatusAdapter(
         }
 
         // Set the meal costs for lunch
-        holder.lEditMealCost.setText(dayMealStatusForRecycler.lmealCost?.toString() ?: "")
-        holder.lEditFuelCost.setText(dayMealStatusForRecycler.lfuelCost?.toString() ?: "")
-        holder.lEditExtraMuttonCost.setText(dayMealStatusForRecycler.lextraMuttonCost?.toString() ?: "")
+        holder.lEditMealCost.setText(dayMealStatus.lmealCost?.toString() ?: "")
+        holder.lEditFuelCost.setText(dayMealStatus.lfuelCost?.toString() ?: "")
+        holder.lEditExtraMuttonCost.setText(dayMealStatus.lextraMuttonCost?.toString() ?: "")
 
         // Set the dinner status and other values
-        if (dayMealStatusForRecycler.dstatus == true) {
+        if (dayMealStatus.dstatus == true) {
             holder.dBtnStatus.setImageResource(R.drawable.ic_tikmark)
 
         } else {
             holder.dBtnStatus.setImageDrawable(null) // Remove image if not checked
         }
 
-        if (dayMealStatusForRecycler.disMuttonOrBeaf == true) {
+        if (dayMealStatus.disMuttonOrBeaf == true) {
             holder.dBtnIsBeafOrMutton.setImageResource(R.drawable.ic_tikmark) // set mutton or beef image
 
         } else {
@@ -151,7 +150,7 @@ class DayMealStatusAdapter(
             holder.dEditExtraMuttonCost.isEnabled  = false
         }
 
-        if (dayMealStatusForRecycler.disAutoMeal == true) {
+        if (dayMealStatus.disAutoMeal == true) {
             holder.dBtnIsAutoMeal.setImageResource(R.drawable.ic_tikmark) // set auto meal image
 
         } else {
@@ -159,16 +158,16 @@ class DayMealStatusAdapter(
         }
 
         // Set the meal costs for dinner
-        holder.dEditMealCost.setText(dayMealStatusForRecycler.dmealCost?.toString() ?: "")
-        holder.dEditFuelCost.setText(dayMealStatusForRecycler.dfuelCost?.toString() ?: "")
-        holder.dEditExtraMuttonCost.setText(dayMealStatusForRecycler.dextraMuttonCost?.toString() ?: "")
+        holder.dEditMealCost.setText(dayMealStatus.dmealCost?.toString() ?: "")
+        holder.dEditFuelCost.setText(dayMealStatus.dfuelCost?.toString() ?: "")
+        holder.dEditExtraMuttonCost.setText(dayMealStatus.dextraMuttonCost?.toString() ?: "")
 
 
         holder.edit.setOnClickListener{
             var intent = Intent(context,DayStatusUpdateActivity::class.java)
 
-            intent.putExtra("day",dayMealStatusForRecycler.date)
-            intent.putExtra("month",dayMealStatusForRecycler.month)
+            intent.putExtra("day",dayMealStatus.date)
+            intent.putExtra("month",dayMealStatus.month)
 
             context.startActivity(intent)
 
@@ -182,5 +181,5 @@ class DayMealStatusAdapter(
 
 
 
-    override fun getItemCount(): Int = dayMealStatusForRecyclerList.size
+    override fun getItemCount(): Int = dayMealStatusList.size
 }

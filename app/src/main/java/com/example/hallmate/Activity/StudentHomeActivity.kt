@@ -46,7 +46,7 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     var isCommitteeMember: Boolean = false
     var dueAmount: Double = 0.0
-    var isStart: Boolean = false
+    var isLock: Boolean = false
     var isMutton: Boolean = false
 
 
@@ -93,9 +93,6 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setNavigationItemColor(navHome)
         setFragment(SHomeFragment())
 
-        checkStartJourney()
-
-
 
 
 
@@ -107,9 +104,6 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
 
-        binding.btnStart.setOnClickListener{
-            startJourney()
-        }
 
 
 
@@ -155,137 +149,8 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     }
 
-    private fun checkStartJourney() {
-       if(!isStart){
-           binding.upper.visibility = View.GONE
-           binding.navView.visibility = View.GONE
-           binding.startLayout.visibility = View.VISIBLE
-       }
-    }
-
-    private fun startJourney() {
-        load.start()
 
 
-        val mealRef = FirebaseDatabase.getInstance().getReference("Meal")
-
-        var feb = "02-2025"
-        var mar = "03-2025"
-        var apr = "04-2025"
-        var may = "05-2025"
-
-        //For february
-
-
-        for(i in 1..4){
-            var month:String = feb
-            var limit :Int = 0
-            when (i){
-                1->{
-                    month = feb
-                    limit = 28
-                }
-                2->{
-                    month = mar
-                    limit = 31
-                }
-                3->{
-                    month = apr
-                    limit = 30
-                }
-                4->{
-                    month = may
-                    limit = 31
-                }
-            }
-
-
-            for(d in 1..limit){
-                var day = d.toString()
-                if(d<10)
-                    day = "0"+day
-
-                var breakFast = Meal(month,day,hallId,"BreakFast",false,false,false,false)
-                var lunch = Meal(month,day,hallId,"Lunch",false,false,false,false)
-                var dinner = Meal(month,day,hallId,"Dinner",false,false,false,false)
-
-                val mealUpdates = mapOf(
-                    "BreakFast" to breakFast,
-                    "Lunch" to lunch,
-                    "Dinner" to dinner
-                )
-
-
-                mealRef.child(month).child(day).child(hallId).updateChildren(mealUpdates)
-                    .addOnSuccessListener {
-                        if (i == 4 && d == 31) {
-                            updateStart()
-                        }
-                    }
-                    .addOnFailureListener {
-                        // Handle failure
-                        println("Failed to update meals: ${it.message}")
-                    }
-
-
-            }
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-    private fun updateStart() {
-       var studentRef = FirebaseDatabase.getInstance().getReference("Student")
-
-        val student = mapOf<String, Any>(
-            "isStart" to true
-        )
-
-        studentRef.child(hallId).updateChildren(student)
-            .addOnSuccessListener {
-              binding.upper.visibility = View.VISIBLE
-                binding.navView.visibility = View.VISIBLE
-                binding.startLayout.visibility = View.GONE
-                load.end()
-
-            }
-            .addOnFailureListener {
-                println("Failed to update student data: ${it.message}")
-            }
-
-
-
-
-    }
 
     private fun setStudentData() {
        binding.name.setText(name)
@@ -324,7 +189,7 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             profilePic = sharedPreferences.getString("profilePic", null).toString()
             password = sharedPreferences.getString("password", null).toString()
             mealCode = sharedPreferences.getString("mealCode", null).toString()
-            isStart = sharedPreferences.getBoolean("isStart", false)
+            isLock = sharedPreferences.getBoolean("isLock", false)
             isMutton = sharedPreferences.getBoolean("isMutton", false)
 
     }

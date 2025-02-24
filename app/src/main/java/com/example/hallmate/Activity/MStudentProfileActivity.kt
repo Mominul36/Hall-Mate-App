@@ -19,6 +19,7 @@ import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Class.SuccessDialog
 import com.example.hallmate.Model.Hall
 import com.example.hallmate.Model.HallIdEmail
+import com.example.hallmate.Model.Meal
 import com.example.hallmate.Model.Student
 import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityMstudentProfileBinding
@@ -218,6 +219,7 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
         val studentRequestRef = database.getReference("Student_Request")
         val studentRef = database.getReference("Student")
         val hallRef = database.getReference("Hall")
+        val hallIdEmailRef = database.getReference("HallIdEmail")
 
         val key = UUID.randomUUID().toString()
 
@@ -249,7 +251,8 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
                                         hallId, studentId, name, email, phone, department, batch, roomNo, isCommitteeMember,
                                         dueAmount, key, profilePic, password, mealCode,false,false
                                     )
-                                    val hallIdEmail = HallIdEmail(hallId, email)
+
+                                    val hallIdEmail = HallIdEmail(hallId,email)
 
                                     // Save the student data in the "Student" node
                                     studentRef.child(hallId).setValue(student)
@@ -257,9 +260,22 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
                                                     // Create the user account in Firebase Authentication
                                                     auth.createUserWithEmailAndPassword(email, password)
                                                         .addOnSuccessListener {
-                                                            // Complete Acceptance
-                                                            load.end()
-                                                            successDialog.show("Accepted", "Name: $name\nStudent Id: $studentId\nHall Id: $hallId", false, "")
+
+                                                            hallIdEmailRef.child(hallId).setValue(hallIdEmail)
+                                                                .addOnSuccessListener {
+
+                                                                            startJourney(hallId,name,studentId)
+
+                                                                }
+                                                                .addOnFailureListener {
+                                                                    Toast.makeText(
+                                                                        this@MStudentProfileActivity, "2 Failed to accept request.", Toast.LENGTH_SHORT).show()
+                                                                }
+
+
+
+
+
                                                         }
                                                         .addOnFailureListener {
                                                             Toast.makeText(this@MStudentProfileActivity, "1 Failed to accept request.", Toast.LENGTH_SHORT).show()
@@ -289,6 +305,81 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
             // Log error if fetching Hall data failed
             Log.d("Hall Update", "Error: ${it.message}")
         }
+    }
+
+
+
+    private fun startJourney(hallId: String, name: String, studentId: String) {
+        val mealRef = FirebaseDatabase.getInstance().getReference("Meal")
+
+        var feb = "02-2025"
+        var mar = "03-2025"
+        var apr = "04-2025"
+        var may = "05-2025"
+
+        //For february
+
+
+        for(i in 1..4){
+            var month:String = feb
+            var limit :Int = 0
+            when (i){
+                1->{
+                    month = feb
+                    limit = 28
+                }
+                2->{
+                    month = mar
+                    limit = 31
+                }
+                3->{
+                    month = apr
+                    limit = 30
+                }
+                4->{
+                    month = may
+                    limit = 31
+                }
+            }
+
+
+            for(d in 1..limit){
+                var day = d.toString()
+                if(d<10)
+                    day = "0"+day
+
+
+                var meal = Meal(month,day,hallId,false,
+                    false,false,false,
+                    false,false,false,
+                    false,false,false)
+
+
+
+                mealRef.child(month).child(hallId).child(day).setValue(meal)
+                    .addOnSuccessListener {
+                        if (i == 4 && d == 31) {
+
+                            load.end()
+                            successDialog.show("Accepted", "Name: $name\nStudent Id: $studentId\nHall Id: $hallId", false, "")
+
+                        }
+                    }
+                    .addOnFailureListener {
+                        // Handle failure
+                        println("Failed to update meals: ${it.message}")
+                    }
+            }
+
+
+        }
+
+
+
+
+
+
+
     }
 
 

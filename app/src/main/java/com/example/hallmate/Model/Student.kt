@@ -18,8 +18,8 @@ data class Student(
     var profilePic:String?=null,
     var password:String?=null,
     var mealCode:String?=null,
-    @get:PropertyName("isStart")
-    var isStart:Boolean?=null,
+    @get:PropertyName("isLock")
+    var isLock:Boolean?=null,
     @get:PropertyName("isMutton")
     var isMutton:Boolean?=null,
     )

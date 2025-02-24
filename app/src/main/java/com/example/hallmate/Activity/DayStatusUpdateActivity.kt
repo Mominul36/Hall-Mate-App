@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.hallmate.Class.Loading
 import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Model.DayMealStatus
-import com.example.hallmate.Model.DayMealStatusForRecycler
+import com.example.hallmate.Model.HallIdEmail
 import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityDayMealStatusBinding
 import com.example.hallmate.databinding.ActivityDayStatusUpdateBinding
@@ -59,6 +59,53 @@ class DayStatusUpdateActivity : AppCompatActivity() {
             saveData()
         }
 
+        binding.bStatus.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked) { // Switch 1 OFF hole baki 2 OFF hobe
+                binding.bMuttonOrBeef.isChecked = false
+                binding.bAutoMeal.isChecked = false
+                binding.bMuttonOrBeef.isEnabled = false
+                binding.bAutoMeal.isEnabled = false
+            } else { // Switch 1 ON hole baki 2 abar on kora jabe
+                binding.bMuttonOrBeef.isEnabled = true
+                binding.bAutoMeal.isEnabled = true
+            }
+        }
+
+        binding.lStatus.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked) { // Switch 1 OFF hole baki 2 OFF hobe
+                binding.lMuttonOrBeef.isChecked = false
+                binding.lAutoMeal.isChecked = false
+                binding.lMuttonOrBeef.isEnabled = false
+                binding.lAutoMeal.isEnabled = false
+            } else { // Switch 1 ON hole baki 2 abar on kora jabe
+                binding.lMuttonOrBeef.isEnabled = true
+                binding.lAutoMeal.isEnabled = true
+            }
+        }
+
+
+        binding.dStatus.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked) { // Switch 1 OFF hole baki 2 OFF hobe
+                binding.dMuttonOrBeef.isChecked = false
+                binding.dAutoMeal.isChecked = false
+                binding.dMuttonOrBeef.isEnabled = false
+                binding.dAutoMeal.isEnabled = false
+            } else { // Switch 1 ON hole baki 2 abar on kora jabe
+                binding.dMuttonOrBeef.isEnabled = true
+                binding.dAutoMeal.isEnabled = true
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -78,46 +125,153 @@ class DayStatusUpdateActivity : AppCompatActivity() {
 
 
 
-// আপডেট করা ডেটা তৈরি করছি
-        val updateData = mapOf(
-            "BreakFast" to DayMealStatus(
-                status = binding.bStatus.isChecked,
-                isMuttonOrBeaf =  binding.bMuttonOrBeef.isChecked ,
-                isAutoMeal =  binding.bAutoMeal.isChecked,
-                mealCost =  binding.bMealCost.text.toString().toDoubleOrNull() ?: 0.0,
-                fuelCost = binding.bFuelCost.text.toString().toDoubleOrNull() ?: 0.0,
-                extraMuttonCost = binding.bExtraMuttonCost.text.toString().toDoubleOrNull() ?: 0.0,
-            ),
-            "Lunch" to DayMealStatus(
-                status = binding.lStatus.isChecked,
-                isMuttonOrBeaf =  binding.lMuttonOrBeef.isChecked ,
-                isAutoMeal =  binding.lAutoMeal.isChecked,
-                mealCost =  binding.lMealCost.text.toString().toDoubleOrNull() ?: 0.0,
-                fuelCost = binding.lFuelCost.text.toString().toDoubleOrNull() ?: 0.0,
-                extraMuttonCost = binding.lExtraMuttonCost.text.toString().toDoubleOrNull() ?: 0.0,
-            ),
-            "Dinner" to DayMealStatus(
-                status = binding.dStatus.isChecked,
-                isMuttonOrBeaf =  binding.dMuttonOrBeef.isChecked ,
-                isAutoMeal =  binding.dAutoMeal.isChecked,
-                mealCost =  binding.dMealCost.text.toString().toDoubleOrNull() ?: 0.0,
-                fuelCost = binding.dFuelCost.text.toString().toDoubleOrNull() ?: 0.0,
-                extraMuttonCost = binding.dExtraMuttonCost.text.toString().toDoubleOrNull() ?: 0.0,
-            ),
-            "isRamadan" to binding.ramadan.isChecked
+        val updateData: Map<String, Any?> = mapOf(
+
+            "isRamadan" to binding.ramadan.isChecked,
+
+            "bstatus" to binding.bStatus.isChecked,
+            "bisMuttonOrBeaf" to binding.bMuttonOrBeef.isChecked,
+            "bisAutoMeal" to binding.bAutoMeal.isChecked,
+            "bmealCost" to (binding.bMealCost.text.toString().toDoubleOrNull()?: 0.0),
+            "bfuelCost" to (binding.bFuelCost.text.toString().toDoubleOrNull()?: 0.0),
+            "bextraMuttonCost" to (binding.bExtraMuttonCost.text.toString().toDoubleOrNull()?: 0.0),
+
+            "lstatus" to binding.lStatus.isChecked,
+            "lisMuttonOrBeaf" to binding.lMuttonOrBeef.isChecked,
+            "lisAutoMeal" to binding.lAutoMeal.isChecked,
+            "lmealCost" to (binding.lMealCost.text.toString().toDoubleOrNull()?: 0.0),
+            "lfuelCost" to (binding.lFuelCost.text.toString().toDoubleOrNull()?: 0.0),
+            "lextraMuttonCost" to (binding.lExtraMuttonCost.text.toString().toDoubleOrNull()?: 0.0),
+
+
+            "dstatus" to binding.dStatus.isChecked,
+            "disMuttonOrBeaf" to  binding.dMuttonOrBeef.isChecked,
+            "disAutoMeal" to binding.dAutoMeal.isChecked,
+            "dmealCost" to (binding.dMealCost.text.toString().toDoubleOrNull()?: 0.0),
+            "dfuelCost" to (binding.dFuelCost.text.toString().toDoubleOrNull()?: 0.0),
+            "dextraMuttonCost" to (binding.dExtraMuttonCost.text.toString().toDoubleOrNull()?: 0.0),
+
         )
+
 
 
         dateReference.updateChildren(updateData).addOnSuccessListener {
 
-            load.end()
-            finish()
-            Toast.makeText(this@DayStatusUpdateActivity,"Updated Successfully",Toast.LENGTH_SHORT).show()
+            checkForMealUpdate()
+
+
         }.addOnFailureListener { error ->
             load.end()
             Toast.makeText(this@DayStatusUpdateActivity,"Update\", \"Error: ${error.message}",Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    private fun checkForMealUpdate() {
+
+        var bl :Boolean  = false
+        val updateData: MutableMap<String, Any?> = mutableMapOf()
+
+        if(binding.bAutoMeal2.isChecked == false && binding.bAutoMeal.isChecked==true){
+            updateData["bstatus"] = true
+            bl = true
+        }
+
+        if(binding.lAutoMeal2.isChecked == false && binding.lAutoMeal.isChecked==true){
+            updateData["lstatus"] = true
+            bl = true
+        }
+
+        if(binding.dAutoMeal2.isChecked == false && binding.dAutoMeal.isChecked==true){
+            updateData["dstatus"] = true
+            bl = true
+        }
+
+        if(binding.bStatus2.isChecked==true && binding.bStatus.isChecked==false){
+            updateData["bstatus"] = false
+            bl = true
+        }
+        if(binding.lStatus2.isChecked==true && binding.lStatus.isChecked==false){
+            updateData["lstatus"] = false
+            bl = true
+        }
+        if(binding.dStatus2.isChecked==true && binding.dStatus.isChecked==false){
+            updateData["dstatus"] = false
+            bl = true
+        }
+        if(bl){
+
+            var str: String = binding.txtDate.text.toString()
+            str = str.replace("Date: ","")
+
+            val day = str.substring(0, 2) // প্রথম ২ অক্ষর
+            val month = str.substring(str.length - 7) // শেষ ৭ অক্ষর
+
+
+
+
+            val fixedHallIds = mutableListOf<String>()
+
+
+            val hallIdEmailRef = FirebaseDatabase.getInstance().getReference("HallIdEmail")
+
+
+            hallIdEmailRef.addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (childSnapshot in snapshot.children) {
+                            val hallIdEmail = childSnapshot.getValue(HallIdEmail::class.java)
+                            hallIdEmail?.hallId?.let {
+                                fixedHallIds.add(it)  // Add hallId to the list
+                            }
+                        }
+
+                        for (hallId in fixedHallIds) {
+                            val mealRef = FirebaseDatabase.getInstance().getReference("Meal")
+                                .child(month)
+                                .child(hallId)
+                                .child(day)
+                            mealRef.updateChildren(updateData)
+                                .addOnSuccessListener {
+
+                                    load.end()
+                                    finish()
+
+
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.e("UpdateError", "Failed to update data for HallId: $hallId", exception)
+                                }
+                        }
+                        Toast.makeText(this@DayStatusUpdateActivity,"Updated Successfully",Toast.LENGTH_SHORT).show()
+
+                    }else{
+                        load.end()
+                        finish()
+                        Toast.makeText(this@DayStatusUpdateActivity,"Updated Successfully",Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    load.end()
+                    Toast.makeText(this@DayStatusUpdateActivity,"Error: ${error.message}",Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
+
+
+
+
+        }else{
+
+            load.end()
+            finish()
+            Toast.makeText(this@DayStatusUpdateActivity,"Updated Successfully",Toast.LENGTH_SHORT).show()
+
+
+        }
     }
 
     private fun checkTime() {
@@ -188,44 +342,47 @@ class DayStatusUpdateActivity : AppCompatActivity() {
         val monthReference = database.getReference("DayMealStatus").child(month).child(day)
         monthReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val isRamadan = snapshot.child("isRamadan").getValue(Boolean::class.java) ?: false
-                Log.d("FirebaseData", "isRamadan: $isRamadan")
 
-                val breakFast = snapshot.child("BreakFast").getValue(DayMealStatus::class.java)
-                val lunch = snapshot.child("Lunch").getValue(DayMealStatus::class.java)
-                val dinner = snapshot.child("Dinner").getValue(DayMealStatus::class.java)
 
-                binding.txtDate.text = "Date: $day-$month"
-                binding.ramadan.isChecked = isRamadan
+                val dayMealStatus = snapshot.getValue(DayMealStatus::class.java)
+                if(dayMealStatus!=null){
+                    binding.txtDate.text = "Date: ${dayMealStatus.date}-${dayMealStatus.month}"
+                    binding.ramadan.isChecked = dayMealStatus.isRamadan!!
 
-                if (breakFast != null) {
-                    Log.d("FirebaseData", "Breakfast: $breakFast")
-                    binding.bStatus.isChecked = breakFast.status!!
-                    binding.bMuttonOrBeef.isChecked = breakFast.isMuttonOrBeaf!!
-                    binding.bAutoMeal.isChecked = breakFast.isAutoMeal!!
-                    binding.bMealCost.setText(breakFast.mealCost?.toString() ?: "")
-                    binding.bFuelCost.setText(breakFast.fuelCost?.toString() ?: "")
-                    binding.bExtraMuttonCost.setText(breakFast.extraMuttonCost?.toString() ?: "")
-                }
 
-                if (lunch != null) {
-                    Log.d("FirebaseData", "Lunch: $lunch")
-                    binding.lStatus.isChecked = lunch.status!!
-                    binding.lMuttonOrBeef.isChecked = lunch.isMuttonOrBeaf!!
-                    binding.lAutoMeal.isChecked = lunch.isAutoMeal!!
-                    binding.lMealCost.setText(lunch.mealCost?.toString() ?: "")
-                    binding.lFuelCost.setText(lunch.fuelCost?.toString() ?: "")
-                    binding.lExtraMuttonCost.setText(lunch.extraMuttonCost?.toString() ?: "")
-                }
+                    binding.bStatus.isChecked = dayMealStatus.bstatus!!
+                    binding.bMuttonOrBeef.isChecked = dayMealStatus.bisMuttonOrBeaf!!
+                    binding.bAutoMeal.isChecked = dayMealStatus.bisAutoMeal!!
+                    binding.bMealCost.setText(dayMealStatus.bmealCost?.toString() ?: "")
+                    binding.bFuelCost.setText(dayMealStatus.bfuelCost?.toString() ?: "")
+                    binding.bExtraMuttonCost.setText(dayMealStatus.bextraMuttonCost?.toString() ?: "")
 
-                if (dinner != null) {
-                    Log.d("FirebaseData", "Dinner: $dinner")
-                    binding.dStatus.isChecked = dinner.status!!
-                    binding.dMuttonOrBeef.isChecked = dinner.isMuttonOrBeaf!!
-                    binding.dAutoMeal.isChecked = dinner.isAutoMeal!!
-                    binding.dMealCost.setText(dinner.mealCost?.toString() ?: "")
-                    binding.dFuelCost.setText(dinner.fuelCost?.toString() ?: "")
-                    binding.dExtraMuttonCost.setText(dinner.extraMuttonCost?.toString() ?: "")
+                    binding.bStatus2.isChecked = dayMealStatus.bstatus!!
+                    binding.bAutoMeal2.isChecked = dayMealStatus.bisAutoMeal!!
+
+
+                    binding.lStatus.isChecked = dayMealStatus.lstatus!!
+                    binding.lMuttonOrBeef.isChecked = dayMealStatus.lisMuttonOrBeaf!!
+                    binding.lAutoMeal.isChecked = dayMealStatus.lisAutoMeal!!
+                    binding.lMealCost.setText(dayMealStatus.lmealCost?.toString() ?: "")
+                    binding.lFuelCost.setText(dayMealStatus.lfuelCost?.toString() ?: "")
+                    binding.lExtraMuttonCost.setText(dayMealStatus.lextraMuttonCost?.toString() ?: "")
+
+                    binding.lStatus2.isChecked = dayMealStatus.lstatus!!
+                    binding.lAutoMeal2.isChecked = dayMealStatus.lisAutoMeal!!
+
+
+                    binding.dStatus.isChecked = dayMealStatus.dstatus!!
+                    binding.dMuttonOrBeef.isChecked = dayMealStatus.disMuttonOrBeaf!!
+                    binding.dAutoMeal.isChecked = dayMealStatus.disAutoMeal!!
+                    binding.dMealCost.setText(dayMealStatus.dmealCost?.toString() ?: "")
+                    binding.dFuelCost.setText(dayMealStatus.dfuelCost?.toString() ?: "")
+                    binding.dExtraMuttonCost.setText(dayMealStatus.dextraMuttonCost?.toString() ?: "")
+
+
+                    binding.dStatus2.isChecked = dayMealStatus.dstatus!!
+                    binding.dAutoMeal2.isChecked = dayMealStatus.disAutoMeal!!
+
                 }
 
                 load2.end()

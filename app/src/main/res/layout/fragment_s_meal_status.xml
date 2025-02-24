@@ -27,6 +27,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@android:style/Widget.Button"
+                    android:text="Save"
+                    android:background="@drawable/button_background_date2"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginHorizontal="5dp"
+                    />
+
+
+
+
+
+
+
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/feb25"
                     android:layout_width="wrap_content"

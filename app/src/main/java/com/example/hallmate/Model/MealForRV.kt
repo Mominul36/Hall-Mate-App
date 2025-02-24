@@ -8,8 +8,8 @@ data class MealForRV(
     var hallId:String?=null,
 
     var bstatus:Boolean?=null,
-    var dstatus:Boolean?=null,
     var lstatus:Boolean?=null,
+    var dstatus:Boolean?=null,
 
     @get:PropertyName("isSahari")
     var isSahari:Boolean?=null,
@@ -18,16 +18,17 @@ data class MealForRV(
     var isRamadan:Boolean?=null,
 
     var bstatusDay:Boolean?=null,
-    var dstatusDay:Boolean?=null,
     var lstatusDay:Boolean?=null,
+    var dstatusDay:Boolean?=null,
 
-    var bIsAutoMeal:Boolean?=null,
-    var lIsAutoMeal:Boolean?=null,
-    var dIsAutoMeal:Boolean?=null,
+    var bisAutoMeal:Boolean?=null,
+    var lisAutoMeal:Boolean?=null,
+    var disAutoMeal:Boolean?=null,
 
 
     var isUpdate:Boolean?=null,
     var isLessThanTwo:Boolean?=null,
+
 
 
     )

@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hallmate.Class.Loading
-import com.example.hallmate.Model.DayMealStatusForRecycler
 import com.example.hallmate.Model.MealForRV
 import com.example.hallmate.R
 
@@ -18,13 +17,6 @@ class SMealStatusAdapter(
     private val context: Context,
     private val mealForRVList: ArrayList<MealForRV>,
 ) : RecyclerView.Adapter<SMealStatusAdapter.MealStatusViewHolder>() {
-
-    var  bStatus: Boolean = false
-    var  lStatus: Boolean = false
-    var  dStatus: Boolean = false
-    var  sStatus: Boolean = false
-
-
 
 
 
@@ -63,20 +55,17 @@ class SMealStatusAdapter(
 
         holder.txtDate.text = mealForRV.date
 
-        if(mealForRV.isRamadan==false){
-            holder.sItemStatus.visibility= View.GONE
-        }
+
+
 
         if (mealForRV.bstatus == true) {
             holder.bBtnStatus.setImageResource(R.drawable.ic_tikmark)
-            bStatus = true
         } else {
             holder.bBtnStatus.setImageDrawable(null) // Remove image if not checked
         }
 
         if (mealForRV.dstatus == true) {
             holder.dBtnStatus.setImageResource(R.drawable.ic_tikmark)
-            dStatus = true
         } else {
             holder.dBtnStatus.setImageDrawable(null) // Remove image if not checked
         }
@@ -85,11 +74,9 @@ class SMealStatusAdapter(
             if(mealForRV.isSahari==true){
                 holder.sBtnStatus.setImageResource(R.drawable.ic_tikmark)
                 holder.lBtnStatus.setImageDrawable(null)
-                sStatus = true
             }else{
                 holder.lBtnStatus.setImageResource(R.drawable.ic_tikmark)
                 holder.sBtnStatus.setImageDrawable(null)
-                lStatus = true
             }
 
         } else {
@@ -103,16 +90,18 @@ class SMealStatusAdapter(
             if(mealForRV.bstatusDay==false){
                 Toast.makeText(context,"Meal not available at this time",Toast.LENGTH_SHORT).show()
             }else{
-                if(mealForRV.bIsAutoMeal==true){
+                if(mealForRV.bisAutoMeal==true){
                     Toast.makeText(context,"Auto Meal",Toast.LENGTH_SHORT).show()
                 }else{
 
-                    if(bStatus==true){
+                    if(mealForRV.bstatus==true){
                         holder.bBtnStatus.setImageDrawable(null)
-                        bStatus = !bStatus
+                        mealForRV.bstatus = !mealForRV.bstatus!!
+                        notifyItemChanged(position)
                     }else{
                         holder.bBtnStatus.setImageResource(R.drawable.ic_tikmark)
-                        bStatus = !bStatus
+                        mealForRV.bstatus = !mealForRV.bstatus!!
+                        notifyItemChanged(position)
                     }
 
                 }
@@ -124,15 +113,17 @@ class SMealStatusAdapter(
             if(mealForRV.dstatusDay==false){
                 Toast.makeText(context,"Meal not available at this time",Toast.LENGTH_SHORT).show()
             }else{
-                if(mealForRV.dIsAutoMeal==true){
+                if(mealForRV.disAutoMeal==true){
                     Toast.makeText(context,"Auto Meal",Toast.LENGTH_SHORT).show()
                 }else{
-                    if(dStatus==true){
+                    if(mealForRV.dstatus==true){
                         holder.dBtnStatus.setImageDrawable(null)
-                        dStatus = !dStatus
+                        mealForRV.dstatus = !mealForRV.dstatus!!
+                        notifyItemChanged(position)
                     }else{
                         holder.dBtnStatus.setImageResource(R.drawable.ic_tikmark)
-                        dStatus = !dStatus
+                        mealForRV.dstatus = !mealForRV.dstatus!!
+                        notifyItemChanged(position)
                     }
                 }
             }
@@ -143,45 +134,62 @@ class SMealStatusAdapter(
             if(mealForRV.lstatusDay==false){
                 Toast.makeText(context,"Meal not available at this time",Toast.LENGTH_SHORT).show()
             }else{
-                if(mealForRV.lIsAutoMeal==true){
+                if(mealForRV.lisAutoMeal==true){
                     Toast.makeText(context,"Auto Meal",Toast.LENGTH_SHORT).show()
                 }else{
-                    if(lStatus==true){
-                        holder.lBtnStatus.setImageDrawable(null)
-                        lStatus = !lStatus
-                    }else{
+                    if(mealForRV.lstatus==false){
                         holder.lBtnStatus.setImageResource(R.drawable.ic_tikmark)
-                        lStatus = !lStatus
+                        mealForRV.lstatus = true
+                        mealForRV.isSahari = false
+                        notifyItemChanged(position)
+                    }else{
+                     if( mealForRV.isSahari==false){
+                         holder.lBtnStatus.setImageDrawable(null)
+                         mealForRV.lstatus = false
+                         mealForRV.isSahari = false
+                         notifyItemChanged(position)
+                     }else{
+                         holder.lBtnStatus.setImageResource(R.drawable.ic_tikmark)
+                         holder.sBtnStatus.setImageDrawable(null)
+                         mealForRV.lstatus = true
+                         mealForRV.isSahari = false
+                         notifyItemChanged(position)
+                     }
 
-                        holder.sBtnStatus.setImageDrawable(null)
-                        sStatus = false
                     }
-
                 }
             }
         }
 
 
-        holder.sItemStatus.setOnClickListener{
 
+        holder.sItemStatus.setOnClickListener{
             if(mealForRV.lstatusDay==false){
                 Toast.makeText(context,"Meal not available at this time",Toast.LENGTH_SHORT).show()
             }else{
-                if(mealForRV.lIsAutoMeal==true){
+                if(mealForRV.lisAutoMeal==true){
                     Toast.makeText(context,"Auto Meal",Toast.LENGTH_SHORT).show()
                 }else{
-                    if(sStatus==true){
-                        holder.sBtnStatus.setImageDrawable(null)
-                        sStatus = !sStatus
-                    }else{
+                    if(mealForRV.lstatus==false){
                         holder.sBtnStatus.setImageResource(R.drawable.ic_tikmark)
-                        sStatus = !sStatus
+                        mealForRV.lstatus = true
+                        mealForRV.isSahari = true
+                        notifyItemChanged(position)
+                    }else{
+                        if( mealForRV.isSahari==false){
+                            holder.sBtnStatus.setImageResource(R.drawable.ic_tikmark)
+                            holder.lBtnStatus.setImageDrawable(null)
+                            mealForRV.lstatus = true
+                            mealForRV.isSahari = true
+                            notifyItemChanged(position)
+                        }else{
+                            holder.sBtnStatus.setImageDrawable(null)
+                            mealForRV.lstatus = false
+                            mealForRV.isSahari = false
+                            notifyItemChanged(position)
+                        }
 
-                        holder.lBtnStatus.setImageDrawable(null)
-                        lStatus = false
                     }
-
-
                 }
             }
         }
@@ -203,4 +211,10 @@ class SMealStatusAdapter(
 
 
     override fun getItemCount(): Int = mealForRVList.size
+
+    fun getUpdatedMealData(): List<MealForRV> {
+        return mealForRVList
+    }
+
+
 }

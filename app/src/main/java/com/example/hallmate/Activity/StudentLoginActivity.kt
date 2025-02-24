@@ -138,7 +138,7 @@ class StudentLoginActivity : AppCompatActivity(), DialogDismissListener {
                     editor.putString("profilePic", student.profilePic)
                     editor.putString("password", student.password)
                     editor.putString("mealCode", student.mealCode)
-                    editor.putBoolean("isStart", student.isStart ?: false)
+                    editor.putBoolean("isLock", student.isLock ?: false)
                     editor.putBoolean("isMutton", student.isMutton ?: false)
 
                     editor.apply()

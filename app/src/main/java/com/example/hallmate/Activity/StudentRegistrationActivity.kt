@@ -231,7 +231,7 @@ class StudentRegistrationActivity : AppCompatActivity(), DialogDismissListener {
         hallId: String, studentId: String, name: String, email: String, phone: String,
         department: String, batch: String, roomNo: String, isCommitteeMember: Boolean,
         dueAmount: Double, key: String, profilePic: String,password:String,mealCode:String,
-        isStart:Boolean,isMutton:Boolean
+        isLock:Boolean,isMutton:Boolean
     ) {
         val studentRef = database.getReference("Student_Request").child(studentId)
 
@@ -250,7 +250,7 @@ class StudentRegistrationActivity : AppCompatActivity(), DialogDismissListener {
             profilePic = profilePic,
             password = password,
             mealCode = mealCode,
-            isStart = isStart,
+            isLock = isLock,
             isMutton = isMutton
         )
 

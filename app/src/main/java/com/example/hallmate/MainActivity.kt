@@ -21,6 +21,7 @@ import com.example.hallmate.Class.Loading
 import com.example.hallmate.Class.Loading2
 import com.example.hallmate.Model.DayMealStatus
 import com.example.hallmate.Model.Hall
+import com.example.hallmate.Model.HallIdEmail
 import com.example.hallmate.Model.Management
 import com.example.hallmate.Model.Meal
 import com.example.hallmate.Model.MealForRV
@@ -60,7 +61,34 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ManagementLoginActivity::class.java))
         }
 
-        checkAuthentication()
+         checkAuthentication()
+
+  // temp()
+
+
+
+
+
+
+    }
+
+   fun temp(){
+
+
+       val ref = database.getReference("HallIdEmail")
+
+
+       for(i in 1..400){
+
+           var hallIdEmail  = HallIdEmail(i.toString(),i.toString()+"@gmail.com")
+
+           ref.child(i.toString()).setValue(hallIdEmail)
+               .addOnSuccessListener {
+
+               }
+
+
+       }
 
 
 
@@ -141,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                                                 editor.putString("profilePic", student.profilePic)
                                                 editor.putString("password", student.password)
                                                 editor.putString("mealCode", student.mealCode)
-                                                editor.putBoolean("isStart", student.isStart ?: false)
+                                                editor.putBoolean("isStart", student.isLock ?: false)
                                                 editor.putBoolean("isMutton", student.isMutton ?: false)
 
                                                 editor.apply()
@@ -197,44 +225,31 @@ class MainActivity : AppCompatActivity() {
         val databaseRef = database.getReference("DayMealStatus")
 
 
-        for (d in 1..31) {
+        for (d in 1..28) {
 
             var day:String = d.toString()
             if(d<10){
                 day = "0"+day
             }
 
-            var month = "05-2025"
+            var month = "02-2025"
 
 
-            val dayStatusb = DayMealStatus(day.toString(),"BreakFast",true,false,false,
-                0.0,0.0,0.0,0)
-            val dayStatusl = DayMealStatus(day.toString(),"Lunch",true,false,false,
-                0.0,0.0,0.0,0)
-            val dayStatusd = DayMealStatus(day.toString(),"Dinner",true,false,false,
-                0.0,0.0,0.0,0)
+            val dayMealStatus = DayMealStatus(day,month,false,
+                true,false,false,0.0,0.0,0.0,0,0,
+                true,false,false,0.0,0.0,0.0,0,0,
+                true,false,false,0.0,0.0,0.0,0,0)
 
 
-            databaseRef.child(month).child(day.toString()).child("BreakFast")
-                .setValue(dayStatusb).addOnSuccessListener {
+
+
+            databaseRef.child(month).child(day.toString())
+                .setValue(dayMealStatus).addOnSuccessListener {
                   //  Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
                 }
 
-            databaseRef.child(month).child(day.toString()).child("Lunch")
-                .setValue(dayStatusl).addOnSuccessListener {
-                    //Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
-                }
-
-            databaseRef.child(month).child(day.toString()).child("Dinner")
-                .setValue(dayStatusd).addOnSuccessListener {
-                 //   Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
-                }
 
 
-            databaseRef.child(month).child(day.toString()).child("isRamadan")
-                .setValue(false).addOnSuccessListener {
-                    //  Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
-                }
 
         }
 
