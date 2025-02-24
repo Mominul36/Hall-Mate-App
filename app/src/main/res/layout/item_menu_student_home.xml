@@ -1,0 +1,36 @@
+<!-- item_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/menu_student_home_background"
+    android:layout_marginHorizontal="10dp"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp"
+    >
+
+    <TextView
+        android:id="@+id/txtname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paratha"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        />
+
+
+    <TextView
+        android:id="@+id/txtquantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 pis"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        />
+</LinearLayout>

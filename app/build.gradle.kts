@@ -76,6 +76,10 @@ dependencies {
     implementation("net.sourceforge.jexcelapi:jxl:2.6.12")
 
 
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
+
+
 
 
 
