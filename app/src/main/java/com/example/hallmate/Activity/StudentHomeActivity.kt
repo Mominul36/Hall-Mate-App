@@ -307,6 +307,11 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 startActivity(Intent(this, MProfileActivity::class.java))
             }
 
+            R.id.nav_bill -> {
+//                supportFragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment()).commit()
+                startActivity(Intent(this, SStudentHallBillActivity::class.java))
+            }
+
 
             R.id.nav_logout -> {
                 auth.signOut()

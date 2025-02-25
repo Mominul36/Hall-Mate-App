@@ -67,10 +67,51 @@ class MainActivity : AppCompatActivity() {
 
 
     //temp()
+       // bal3()
 
 
 
     }
+//     fun bal3(){
+//         val ref = database.getReference("Meal")
+//
+//         ref.child("02-2025").order().equalTo("01")
+//             .addListenerForSingleValueEvent(object: ValueEventListener{
+//                 override fun onDataChange(snapshot: DataSnapshot) {
+//                     if(snapshot.exists()){
+//                         for(mealSnalshot in snapshot.children){
+//                             var meal = mealSnalshot.getValue(Meal::class.java)
+//                             if(meal!=null){
+//                                 Log.d("FirebaseSuccess",meal.toString())
+//
+//
+//
+//
+//                             }
+//                         }
+//
+//                     }
+//
+//
+//                 }
+//
+//                 override fun onCancelled(error: DatabaseError) {
+//
+//                 }
+//
+//             })
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//     }
+
+
 
 
     fun setMenuData() {
@@ -454,35 +495,49 @@ class MainActivity : AppCompatActivity() {
         val databaseRef = database.getReference("DayMealStatus")
 
 
-        for (d in 1..28) {
+        for (d in 1..31) {
 
             var day:String = d.toString()
             if(d<10){
                 day = "0"+day
             }
 
-            var month = "02-2025"
+            var month = "05-2025"
 
 
-            val dayMealStatus = DayMealStatus(day,month,false,
-                true,false,false,0.0,0.0,0.0,0,0,
-                true,false,false,0.0,0.0,0.0,0,0,
-                true,false,false,0.0,0.0,0.0,0,0)
+            val dayMealStatus = DayMealStatus(
+                day, month, false,
+                true, false, false, 0.0, 0.0, 0.0, 0, 0,0,0,
+                true, false, false, 0.0, 0.0, 0.0, 0, 0,0,0,
+                true, false, false, 0.0, 0.0, 0.0, 0, 0,0,0
+            )
 
 
 
 
-            databaseRef.child(month).child(day.toString())
-                .setValue(dayMealStatus).addOnSuccessListener {
-                  //  Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
-                }
+
+
+
+            if (dayMealStatus.date == null || dayMealStatus.month == null) {
+                Log.e("FirebaseSuccess", "DayMealStatus contains null values")
+            } else {
+                databaseRef.child(month).child(day)
+                    .setValue(dayMealStatus)
+                    .addOnSuccessListener {
+                        Log.d("FirebaseSuccess", "Data added successfully")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("FirebaseSuccess", "Failed to add data: ${e.message}")
+                    }
+            }
+
 
 
 
 
         }
 
-        Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@MainActivity, "Added", Toast.LENGTH_SHORT).show()
 
 
 

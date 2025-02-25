@@ -19,15 +19,15 @@ class MStudentActivity : AppCompatActivity() {
         binding = ActivityMstudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = StudentViewPagerAdapter(this)
-        binding.viewPager.adapter = adapter
-
-        val tabTitles = arrayOf("Student Request", "Student List")
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = tabTitles[position]
-        }.attach()
-
-        binding.viewPager.isUserInputEnabled = false
+//        val adapter = StudentViewPagerAdapter(this)
+//        binding.viewPager.adapter = adapter
+//
+//        val tabTitles = arrayOf("Student Request", "Student List")
+//        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+//            tab.text = tabTitles[position]
+//        }.attach()
+//
+//        binding.viewPager.isUserInputEnabled = false
 
 
 

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".Fragments.MCommittieeMemberFragment"
+    android:background="@color/bg_color"
+    >
+
+    <!-- Search bar section -->
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
+
+
+                <EditText
+                    android:id="@+id/editAdd"
+                    android:layout_width="160dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/edit_search_background"
+                    android:textColor="@color/black"
+                    android:paddingHorizontal="8dp"
+                    android:textSize="18sp"
+                    android:hint="hallId to add C.M"
+                    android:textStyle="bold"
+                    android:inputType="numberDecimal"
+                    android:layout_toLeftOf="@+id/btnAdd"
+                    android:layout_marginRight="8dp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnAdd"
+                    android:layout_width="80dp"
+                    android:layout_height="38dp"
+                    style="@android:style/Widget.Button"
+                    android:text="Add"
+                    android:background="@drawable/button_background_search"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/item_student_background"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/item_student_background">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="H. Id"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/item_student_background"/>
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:text="Student Id"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/item_student_background"/>
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/item_student_background"/>
+
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/item_student_background"/>
+
+
+            </LinearLayout>
+
+            <!-- RecyclerView with Horizontal Scroll inside -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"/>
+
+        </LinearLayout>
+
+
+
+
+    </HorizontalScrollView>
+
+
+
+
+
+
+
+
+
+</LinearLayout>

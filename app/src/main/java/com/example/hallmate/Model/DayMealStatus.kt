@@ -27,6 +27,9 @@ data class DayMealStatus(
     @get:PropertyName("bguestMeal")
     var bguestMeal:Int?=null,
 
+    var bMuttonMeal:Int?=null,
+    var bguestMuttonMeal:Int?=null,
+
     @get:PropertyName("lstatus")
     var lstatus:Boolean?=null,
     @get:PropertyName("lisMuttonOrBeaf")
@@ -44,6 +47,13 @@ data class DayMealStatus(
     @get:PropertyName("lguestMeal")
     var lguestMeal:Int?=null,
 
+    var lMuttonMeal:Int?=null,
+    var lguestMuttonMeal:Int?=null,
+
+
+
+
+
     @get:PropertyName("dstatus")
     var dstatus:Boolean?=null,
     @get:PropertyName("disMuttonOrBeaf")
@@ -60,4 +70,7 @@ data class DayMealStatus(
     var dtotalMeal:Int?=null,
     @get:PropertyName("dguestMeal")
     var dguestMeal:Int?=null,
+
+    var dMuttonMeal:Int?=null,
+    var dguestMuttonMeal:Int?=null
 )

@@ -83,8 +83,10 @@ class MCurrentStudentFragment : Fragment() {
                     student?.let {
                         if (it.studentId?.contains(searchString) == true ||
                             it.roomNo?.contains(searchString) == true ||
-                            it.hallId?.contains(searchString) == true) {
-                            studentList.add(it)
+                            it.hallId?.contains(searchString) == true ) {
+                            if(it.batch!="1"){
+                                studentList.add(it)
+                            }
                         }
                     }
                 }

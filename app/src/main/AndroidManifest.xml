@@ -13,12 +13,20 @@
         android:theme="@style/Theme.HallMate"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.DayStatusUpdateActivity"
+            android:name=".Activity.AddStaffActivity"
             android:exported="true">
 
 
 
+
+
         </activity>
+        <activity
+            android:name=".Activity.SStudentHallBillActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.DayStatusUpdateActivity"
+            android:exported="true" />
         <activity
             android:name=".Activity.DayMealStatusActivity"
             android:exported="false" />
@@ -40,7 +48,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Activity.ProvostHomeActivity"

@@ -9,7 +9,10 @@
         android:title="Profile"
         android:icon="@drawable/ic_profile"/>
 
-
+    <item
+        android:id="@+id/nav_bill"
+        android:title="Hall Bill"
+        android:icon="@drawable/ic_profile"/>
 
 
     <item

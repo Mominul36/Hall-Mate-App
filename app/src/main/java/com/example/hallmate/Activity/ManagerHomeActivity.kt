@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.hallmate.Fragments.MHomeFragment
+import com.example.hallmate.Fragments.MStaffHomeFragment
+import com.example.hallmate.Fragments.MStudentHomeFragment
 import com.example.hallmate.MainActivity
 import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityManagerHomeBinding
@@ -88,12 +90,12 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         navMarket.setOnClickListener {
             setNavigationItemColor(navMarket)
-            //setFragment(MarketFragment())
+            setFragment(MStudentHomeFragment())
         }
 
         navService.setOnClickListener {
             setNavigationItemColor(navService)
-            //setFragment(ServiceFragment())
+            setFragment(MStaffHomeFragment())
         }
 
         navMessage.setOnClickListener {
