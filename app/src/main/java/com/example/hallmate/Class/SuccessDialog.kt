@@ -12,6 +12,7 @@ import com.example.hallmate.R
 
 interface DialogDismissListener {
     fun onDialogDismissed(message: String)
+
 }
 
 class SuccessDialog(

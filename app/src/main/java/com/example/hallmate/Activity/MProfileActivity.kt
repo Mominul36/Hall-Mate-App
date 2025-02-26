@@ -19,6 +19,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.hallmate.Class.ControlImage
+import com.example.hallmate.Class.DialogDismissListener
+import com.example.hallmate.Class.Loading
+import com.example.hallmate.Class.SuccessDialog
 import com.example.hallmate.MainActivity
 import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityManagerHomeBinding
@@ -28,7 +31,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.database.FirebaseDatabase
 
-class MProfileActivity : AppCompatActivity() {
+class MProfileActivity : AppCompatActivity(), DialogDismissListener {
 
     lateinit var  name : String
     lateinit var  designation : String
@@ -38,14 +41,15 @@ class MProfileActivity : AppCompatActivity() {
     lateinit var  profilePic : String
     lateinit var  userType : String
 
-    private lateinit var controlImage: ControlImage
-
     lateinit var binding: ActivityMprofileBinding
     lateinit var auth : FirebaseAuth
     var database = FirebaseDatabase.getInstance()
 
     var flagOldPass = false
     var flagNewPass = false
+
+    lateinit var successDialog :SuccessDialog
+    lateinit var load:Loading
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +58,13 @@ class MProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
-        controlImage = ControlImage(this, activityResultRegistry, "profilePic")
-        controlImage.setImageView(binding.pic)
+        successDialog = SuccessDialog(this,this)
+        load = Loading(this)
+
 
         setUserDetails()
 
 
-        binding.pic.setOnClickListener{
-            controlImage.selectImage()
-        }
         binding.back.setOnClickListener{
             finish()
         }
@@ -146,11 +148,15 @@ class MProfileActivity : AppCompatActivity() {
         }
 
         update.setOnClickListener {
+            load.start()
             val phone1 = editphone.text.toString()
             if(phone==phone1){
+                load.end()
+                dialog.dismiss()
                 Toast.makeText(this, "Phone Number updated successfully", Toast.LENGTH_SHORT).show()
             }else{
                 if (phone1.isEmpty()) {
+                    load.end()
                     Toast.makeText(this, "Enter Valid phone number.\n Like: +8801*********", Toast.LENGTH_SHORT).show()
                 } else {
                     if(validatePhone(phone1)){
@@ -169,16 +175,19 @@ class MProfileActivity : AppCompatActivity() {
                                 editor.apply()
                                 phone = phone1
                                 binding.phone.setText(phone)
+                                load.end()
                                 Toast.makeText(this, "Phone Number updated successfully", Toast.LENGTH_SHORT).show()
                             }
                             .addOnFailureListener { exception ->
-                                Toast.makeText(this, "Error updating name: ${exception.message}", Toast.LENGTH_SHORT).show()
+                                load.end()
+                                Toast.makeText(this, "Error updating Phone: ${exception.message}", Toast.LENGTH_SHORT).show()
                             }
                         dialog.dismiss()
 
 
 
                     }else{
+                        load.end()
                         Toast.makeText(this, "Enter Valid phone number.\n Like: +8801*********", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -203,9 +212,11 @@ class MProfileActivity : AppCompatActivity() {
         }
 
         update.setOnClickListener {
+            load.start()
             val name1 = editname.text.toString()
 
             if (name1.isEmpty()) {
+                load.end()
                 Toast.makeText(this, "Enter your Name", Toast.LENGTH_SHORT).show()
             } else {
 
@@ -225,9 +236,13 @@ class MProfileActivity : AppCompatActivity() {
                         editor.apply()
                         name = name1
                         binding.name.setText(name)
+                        load.end()
                         Toast.makeText(this, "Name updated successfully", Toast.LENGTH_SHORT).show()
+
+
                     }
                     .addOnFailureListener { exception ->
+                        load.end()
                         Toast.makeText(this, "Error updating name: ${exception.message}", Toast.LENGTH_SHORT).show()
                     }
                 dialog.dismiss()
@@ -256,13 +271,17 @@ class MProfileActivity : AppCompatActivity() {
         }
 
         update.setOnClickListener {
+            load.start()
             val email1 = editemail.text.toString()
             val password1 = editpassword.text.toString()
 
             if (email == email1) {
-                Toast.makeText(this, "Email updated successfully", Toast.LENGTH_SHORT).show()
+                load.end()
+                dialog.dismiss()
+                successDialog.show("Success","Email updated successfully",true,"")
             } else {
                 if (password1.isEmpty() || email1.isEmpty()) {
+                    load.end()
                     Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 } else {
                     // Check if email already exists
@@ -274,6 +293,7 @@ class MProfileActivity : AppCompatActivity() {
 
                                 // If the email is already used (signInMethods is not empty), show an error
                                 if (signInMethods != null && signInMethods.isNotEmpty()) {
+                                    load.end()
                                     Toast.makeText(this, "Email already used.", Toast.LENGTH_SHORT).show()
                                 } else {
                                     // Reauthenticate the user if the email is different
@@ -289,9 +309,11 @@ class MProfileActivity : AppCompatActivity() {
                                             .addOnFailureListener { exception ->
                                                 if (exception is FirebaseAuthInvalidCredentialsException) {
                                                     // If the exception is due to invalid credentials, show "Wrong Password"
+                                                    load.end()
                                                     Toast.makeText(this, "Wrong Password", Toast.LENGTH_SHORT).show()
                                                 } else {
                                                     // Handle other errors
+                                                    load.end()
                                                     Toast.makeText(this, "Reauthentication failed: ${exception.message}", Toast.LENGTH_SHORT).show()
                                                 }
                                             }
@@ -299,6 +321,7 @@ class MProfileActivity : AppCompatActivity() {
                                 }
                             } else {
                                 // Error fetching sign-in methods for email
+                                load.end()
                                 Toast.makeText(this, "Error checking email availability: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -321,7 +344,8 @@ class MProfileActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener { exception ->
                         // Handle failure during sign-in
-                        Toast.makeText(this, "Error Updating Email: ${exception.message}", Toast.LENGTH_SHORT).show()
+                        load.end()
+                        Toast.makeText(this, "Error : ${exception.message}", Toast.LENGTH_SHORT).show()
                     }
 
 
@@ -344,12 +368,14 @@ class MProfileActivity : AppCompatActivity() {
                     createNewAccount(newEmail, password,dialog)
                 }
                 .addOnFailureListener { exception ->
+                    load.end()
                     // Handle failure when updating email in Firebase Authentication
-                    Toast.makeText(this, "Error updating email: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
             // Handle case where the user is not signed in
-            Toast.makeText(this, "User is not signed in", Toast.LENGTH_SHORT).show()
+            load.end()
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -377,16 +403,20 @@ class MProfileActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         email = newEmail
                         binding.email.setText(email)
+                        load.end()
                         Toast.makeText(this, "Email updated successfully", Toast.LENGTH_SHORT).show()
+
                         dialog.dismiss()
                     }
                     .addOnFailureListener { exception ->
                         // Handle failure
-                        Toast.makeText(this, "Error updating email in database: ${exception.message}", Toast.LENGTH_SHORT).show()
+                        load.end()
+                        Toast.makeText(this, "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
                     }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error updating email in database: ${exception.message}", Toast.LENGTH_SHORT).show()
+                load.end()
+                Toast.makeText(this, "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -516,5 +546,9 @@ class MProfileActivity : AppCompatActivity() {
 
         binding.mainLayout.visibility = View.GONE
         binding.passwordLayout.visibility = View.VISIBLE
+    }
+
+    override fun onDialogDismissed(message: String) {
+        TODO("Not yet implemented")
     }
 }

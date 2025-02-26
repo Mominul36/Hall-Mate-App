@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hallmate.Activity.MStaffProfileActivity
 import com.example.hallmate.Activity.MStudentProfileActivity
 import com.example.hallmate.Model.Student
 import com.example.hallmate.R
@@ -35,16 +36,13 @@ class StaffAdapter(
         // Set onClickListener to navigate to the student detail activity
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
-            val intent = Intent(context, MStudentProfileActivity::class.java).apply {
+            val intent = Intent(context, MStaffProfileActivity::class.java).apply {
                 // Pass all student details
                 putExtra("hallId", staff.hallId)
                 putExtra("name", staff.name)
                 putExtra("department", staff.department)
-                putExtra("batch", staff.batch)
                 putExtra("key", staff.key)
-                putExtra("isLock", staff.password)
-                putExtra("isMutton", staff.mealCode)
-                putExtra("message", "current_student")
+                putExtra("isMutton", staff.isMutton)
             }
             context.startActivity(intent)
         }

@@ -23,6 +23,7 @@ import com.example.hallmate.Model.Meal
 import com.example.hallmate.Model.Student
 import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityMstudentProfileBinding
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -51,6 +52,7 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
     lateinit var key :String
     lateinit var password :String
     lateinit var mealCode :String
+     var isLock :Boolean = false
     lateinit var message :String
 
 
@@ -66,9 +68,11 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
         getAllData()
         setButtonStatus()
         setAllData()
+
         if(message=="student_request"){
-            binding.dueAmountLayout.visibility = View.GONE
+            binding.lock.visibility = View.GONE
         }
+
 
         binding.back.setOnClickListener{
             finish()
@@ -78,10 +82,8 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
 
 
 
-
-
         binding.denyBtn.setOnClickListener{
-            showConfirmationDialog()
+            showConfirmationDialog1()
         }
 
         binding.acceptBtn.setOnClickListener{
@@ -89,9 +91,13 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
             acceptStudent()
         }
 
-        binding.saveBtn.setOnClickListener{
+        binding.save.setOnClickListener{
             load.start()
             updateStudent()
+        }
+
+        binding.delete.setOnClickListener{
+            showConfirmationDialog2()
         }
 
 
@@ -120,16 +126,6 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
             } else {
                 binding.room.setBackgroundResource(R.drawable.edit_nonfocus_background)
                 binding.room.setPadding(0,0,0,0)
-            }
-        }
-
-        binding.dueAmount.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                binding.dueAmount.setBackgroundResource(R.drawable.edit_focus_background)
-                binding.dueAmount.setPadding(20,10,20,10)
-            } else {
-                binding.dueAmount.setBackgroundResource(R.drawable.edit_nonfocus_background)
-                binding.dueAmount.setPadding(0,0,0,0)
             }
         }
 
@@ -178,32 +174,16 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
         updates["roomNo"] = binding.room.text.toString()
         updates["department"] = binding.department.text.toString()
         updates["batch"] = binding.batch.text.toString()
-
-        // Ensure 'dueAmount' is a valid number before updating
-        val dueAmountStr = binding.dueAmount.text.toString()
-
-        if (dueAmountStr.isNotEmpty()) {
-            val dueAmountDouble = dueAmountStr.toDoubleOrNull()
-            if (dueAmountDouble != null) {
-                updates["dueAmount"] = dueAmountDouble
-            } else {
-                // Check if it's a valid integer
-                val dueAmountInt = dueAmountStr.toIntOrNull()
-                if (dueAmountInt != null) {
-                    updates["dueAmount"] = dueAmountInt.toDouble() // Convert integer to double if needed
-                } else {
-                    Toast.makeText(this, "Due amount is invalid", Toast.LENGTH_SHORT).show()
-                    return
-                }
-            }
-        }
+        updates["isLock"] = binding.lock.isChecked
 
 
         // Update only the changed fields
         studentRef.child(hallId).updateChildren(updates).addOnSuccessListener {
+
             load.end()
             successDialog.show("Updated","Successfully updated student data.",true,"")
         }.addOnFailureListener { error ->
+            load.end()
             Toast.makeText(this, "Failed to update: ${error.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -383,7 +363,7 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
     }
 
 
-    private fun showConfirmationDialog() {
+    private fun showConfirmationDialog1() {
 
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_confirmation)
@@ -411,6 +391,86 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
         dialog.show()
     }
 
+    private fun showConfirmationDialog2() {
+
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_confirmation)
+        dialog.setCancelable(false)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        val textTitle = dialog.findViewById<TextView>(R.id.title)
+        val textMessage = dialog.findViewById<TextView>(R.id.message)
+        val btnPositive = dialog.findViewById<TextView>(R.id.positiveBtn)
+        val btnNegative = dialog.findViewById<TextView>(R.id.negativeBtn)
+
+        textTitle.setText("Delete Student?")
+        textMessage.setText("Are you sure? This cannot be undone.")
+        btnPositive.setText("Delete")
+
+        btnNegative.setOnClickListener{
+            dialog.dismiss()
+        }
+        btnPositive.setOnClickListener{
+            dialog.dismiss()
+            load.start()
+            deleteStudent()
+        }
+        dialog.show()
+    }
+
+    private fun deleteStudent() {
+        val studentRef = FirebaseDatabase.getInstance().getReference("Student")
+        val hallIdEmailRef = FirebaseDatabase.getInstance().getReference("HallIdEmail")
+
+        studentRef.child(hallId).removeValue().addOnSuccessListener {
+            // After deleting from the Student table, try deleting from HallIdEmail
+            hallIdEmailRef.child(hallId).removeValue().addOnSuccessListener {
+                // After deleting from HallIdEmail table, check the Mutton table
+                val muttonRef = FirebaseDatabase.getInstance().getReference("Mutton")
+                muttonRef.child(hallId).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(muttonSnapshot: DataSnapshot) {
+                        if (muttonSnapshot.exists()) {
+                            // Step 3: Delete from Mutton table if it exists
+                            muttonRef.child(hallId).removeValue().addOnSuccessListener {
+                                // All deletions successful
+                                load.end()
+                                successDialog.show("Deleted","Student deleted successfully",true,"")
+                            }.addOnFailureListener {
+                                // Failed to delete from Mutton table, still proceed with other deletions
+                                load.end()
+                                successDialog.show("Deleted","Student deleted successfully",true,"")
+                            }
+                        } else {
+                            // If Mutton table doesn't exist for this hallId, skip deletion in Mutton
+                            load.end()
+                            successDialog.show("Deleted","Student deleted successfully",true,"")
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        load.end()
+                        // Handle error in Mutton table check
+                        Toast.makeText(this@MStudentProfileActivity, "Failed to check Mutton table for hallId.", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }.addOnFailureListener {
+                load.end()
+                // Failed to delete from HallIdEmail table, show error message
+                Toast.makeText(this@MStudentProfileActivity, "Failed to delete from HallIdEmail table.", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener {
+            load.end()
+            // Failed to delete from Student table, show error message
+            Toast.makeText(this@MStudentProfileActivity, "Failed to delete from Student table.", Toast.LENGTH_SHORT).show()
+        }
+
+    }//////
+
+
+
+
+
     private fun denyRequest() {
        val databaseRef = database.getReference("Student_Request")
         databaseRef.child(studentId).removeValue()
@@ -429,23 +489,23 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
     private fun setButtonStatus() {
         if(message=="current_student" || message=="committee_member"){
              binding.requestBtnLayout.visibility = View.GONE
-            binding.saveBtnLayout.visibility = View.VISIBLE
+            binding.updateBtnLayout.visibility = View.VISIBLE
         }else if(message=="student_request"){
             binding.requestBtnLayout.visibility = View.VISIBLE
-            binding.saveBtnLayout.visibility = View.GONE
+            binding.updateBtnLayout.visibility = View.GONE
         }
     }
 
     private fun setAllData() {
        binding.name.setText(name)
-        binding.hallId.setText(hallId)
+        binding.hallId.setText("Hall Id: "+hallId)
         binding.studentId.setText(studentId)
         binding.room.setText(roomNo)
-        binding.dueAmount.setText(dueAmount.toString())
         binding.department.setText(department)
         binding.batch.setText(batch)
         binding.email.setText(email)
         binding.phone.setText(phone)
+        binding.lock.isChecked = isLock
 
 
 
@@ -466,6 +526,7 @@ class MStudentProfileActivity : AppCompatActivity(), DialogDismissListener {
         key = intent.getStringExtra("key").toString()
         password = intent.getStringExtra("password").toString()
         mealCode = intent.getStringExtra("mealCode").toString()
+        isLock = intent.getBooleanExtra("isLock",false)
         message = intent.getStringExtra("message").toString()
     }
 }

@@ -439,7 +439,7 @@ class MainActivity : AppCompatActivity() {
                                                 editor.putString("profilePic", student.profilePic)
                                                 editor.putString("password", student.password)
                                                 editor.putString("mealCode", student.mealCode)
-                                                editor.putBoolean("isStart", student.isLock ?: false)
+                                                editor.putBoolean("isLock", student.isLock ?: false)
                                                 editor.putBoolean("isMutton", student.isMutton ?: false)
 
                                                 editor.apply()

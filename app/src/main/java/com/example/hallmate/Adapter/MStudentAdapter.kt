@@ -56,6 +56,7 @@ class MStudentAdapter(
                 putExtra("profilePic", student.profilePic)
                 putExtra("password", student.password)
                 putExtra("mealCode", student.mealCode)
+                putExtra("isLock", student.isLock)
                 putExtra("message", "current_student")
             }
             context.startActivity(intent)

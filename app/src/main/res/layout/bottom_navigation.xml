@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/bottom_navigation_background"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:weightSum="4"
+    >
 
     <!-- Home item -->
     <LinearLayout
@@ -14,69 +16,70 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="8dp">
+       >
 
         <ImageView
             android:id="@+id/icon_home"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/home" />
+            android:src="@drawable/home_black" />
 
         <TextView
             android:id="@+id/txt_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="Home"  android:textAlignment="center"
             android:textSize="12sp"
             android:textColor="@color/black" />
     </LinearLayout>
 
     <!-- Market item -->
     <LinearLayout
-        android:id="@+id/nav_market"
+        android:id="@+id/nav_student"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="8dp">
+       >
 
         <ImageView
-            android:id="@+id/icon_market"
+            android:id="@+id/icon_student"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/cart" />
+            android:src="@drawable/student_black" />
 
         <TextView
-            android:id="@+id/txt_market"
+            android:id="@+id/txt_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Market"
+            android:text="Student"  android:textAlignment="center"
             android:textSize="12sp"
             android:textColor="@color/black" />
     </LinearLayout>
 
     <!-- Crop Care item -->
     <LinearLayout
-        android:id="@+id/nav_service"
+        android:id="@+id/nav_staff"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.1"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="8dp">
+      >
 
         <ImageView
-            android:id="@+id/icon_crop_care"
+            android:id="@+id/icon_staff"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/crop_care" />
+            android:src="@drawable/staff_black" />
 
         <TextView
-            android:id="@+id/txt_crop_care"
+            android:id="@+id/txt_staff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Service"
+            android:text="Staff"
+            android:textAlignment="center"
             android:textSize="12sp"
             android:textColor="@color/black"
             android:gravity="center"
@@ -85,52 +88,30 @@
 
     <!-- Advisor item -->
     <LinearLayout
-        android:id="@+id/nav_message"
+        android:id="@+id/nav_meal_management"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="8dp">
+      >
 
         <ImageView
-            android:id="@+id/icon_advisor"
+            android:id="@+id/icon_meal_management"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/message" />
+            android:src="@drawable/meal_status_black" />
 
         <TextView
-            android:id="@+id/txt_advisor"
+            android:id="@+id/txt_meal_management"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Message"
+            android:text="Meal Control"
             android:textSize="12sp"
+            android:textAlignment="center"
             android:textColor="@color/black" />
     </LinearLayout>
 
-    <!-- Profile item -->
-    <LinearLayout
-        android:id="@+id/nav_profile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/icon_profile"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/profile_user" />
-
-        <TextView
-            android:id="@+id/txt_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textSize="12sp"
-            android:textColor="@color/black" />
-    </LinearLayout>
 
 </LinearLayout>

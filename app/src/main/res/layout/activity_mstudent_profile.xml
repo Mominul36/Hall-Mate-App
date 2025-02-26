@@ -119,6 +119,35 @@
                     android:textSize="22sp"
                     android:enabled="false"/>
 
+
+                <RelativeLayout
+                    android:id="@+id/lockLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <Switch
+                        android:id="@+id/lock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Id Lock  "
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        />
+
+
+
+                </RelativeLayout>
+
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -177,6 +206,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/dueAmountLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -335,6 +365,7 @@
                     android:weightSum="10"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="500dp"
+                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -400,34 +431,74 @@
 
 
                 </LinearLayout>
-                <RelativeLayout
-                    android:id="@+id/saveBtnLayout"
+
+                <LinearLayout
+                    android:id="@+id/updateBtnLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="500dp"
                     >
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/saveBtn"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@android:style/Widget.Button"
-                        android:text="Save"
-                        android:background="@drawable/button_background_accept"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
-                        android:paddingVertical="3dp"
-                        android:paddingHorizontal="15dp"
-                        />
+                        android:orientation="horizontal"
+                        android:layout_weight="5"
+                        android:gravity="center"
+                        >
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/save"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@android:style/Widget.Button"
+                            android:text="Save"
+                            android:background="@drawable/button_background_accept"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingVertical="3dp"
+                            android:paddingHorizontal="15dp"
+                            />
 
 
 
-                </RelativeLayout>
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_weight="5"
+                        android:gravity="center"
+                        >
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@android:style/Widget.Button"
+                            android:text="Delete"
+                            android:background="@drawable/button_background_deny"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingVertical="3dp"
+                            android:paddingHorizontal="15dp"
+                            />
+
+
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
 
 
 

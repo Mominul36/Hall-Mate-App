@@ -6,14 +6,16 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.result.ActivityResultRegistry
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.hallmate.Fragments.DayMealStatusFragment
+import com.example.hallmate.Fragments.MDailyReportFragment
 import com.example.hallmate.Fragments.MHomeFragment
+import com.example.hallmate.Fragments.MReportFragment
 import com.example.hallmate.Fragments.MStaffHomeFragment
 import com.example.hallmate.Fragments.MStudentHomeFragment
 import com.example.hallmate.MainActivity
@@ -21,25 +23,32 @@ import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityManagerHomeBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Calendar
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var navHome: LinearLayout
-    lateinit var navMarket: LinearLayout
-    lateinit var navService: LinearLayout
-    lateinit var navMessage: LinearLayout
-    lateinit var navProfile: LinearLayout
+    lateinit var navStudent: LinearLayout
+    lateinit var navStaff: LinearLayout
+    lateinit var navMealManagement: LinearLayout
 
     lateinit var iconHome: ImageView
-    lateinit var iconMarket: ImageView
-    lateinit var iconCropCare: ImageView
-    lateinit var iconAdvisor: ImageView
-    lateinit var iconProfile: ImageView
+    lateinit var iconStudent: ImageView
+    lateinit var iconStaff: ImageView
+    lateinit var iconMealManagement: ImageView
 
     lateinit var txtHome: TextView
-    lateinit var txtMarket: TextView
-    lateinit var txtCropCare: TextView
-    lateinit var txtAdvisor: TextView
-    lateinit var txtProfile: TextView
+    lateinit var txtStudent: TextView
+    lateinit var txtStaff: TextView
+    lateinit var txtMealManagement: TextView
+
+
+    lateinit var  name : String
+    lateinit var  designation : String
+    lateinit var  phone : String
+    lateinit var  email : String
+    lateinit var  password : String
+    lateinit var  profilePic : String
+    lateinit var  userType : String
 
 
     lateinit var binding: ActivityManagerHomeBinding
@@ -56,9 +65,9 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         auth = FirebaseAuth.getInstance()
         initVariable()
 
-        setNavigationItemColor(navHome)
-
-        setFragment(MHomeFragment())
+         setNavigationItemColor(navHome)
+        setManagerData()
+           setFragment(MReportFragment())
 
 
 
@@ -77,40 +86,56 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 binding.drawerlayout.openDrawer(GravityCompat.END)
             }
         }
-
         binding.navView.setNavigationItemSelectedListener(this)
 
 
 
 
         navHome.setOnClickListener {
-            setNavigationItemColor(navHome)
-            setFragment(MHomeFragment())
+             setNavigationItemColor(navHome)
+            setFragment(MReportFragment())
         }
 
-        navMarket.setOnClickListener {
-            setNavigationItemColor(navMarket)
-            setFragment(MStudentHomeFragment())
+        navStudent.setOnClickListener {
+             setNavigationItemColor(navStudent)
+             setFragment(MStudentHomeFragment())
         }
 
-        navService.setOnClickListener {
-            setNavigationItemColor(navService)
+        navStaff.setOnClickListener {
+             setNavigationItemColor(navStaff)
             setFragment(MStaffHomeFragment())
         }
 
-        navMessage.setOnClickListener {
-            setNavigationItemColor(navMessage)
-           // setFragment(MessageFragment())
+        navMealManagement.setOnClickListener {
+             setNavigationItemColor(navMealManagement)
+              setFragment(DayMealStatusFragment())
         }
-
-        navProfile.setOnClickListener {
-            setNavigationItemColor(navProfile)
-            //setFragment(ProfileFragment())
-        }
-
-
 
     }
+
+
+    private fun setManagerData() {
+        var sharedPreferences = getSharedPreferences("HallMatePreferences", MODE_PRIVATE)
+
+        name = sharedPreferences.getString("name","").toString()
+        binding.name.setText(name)
+        binding.time.setText(getGreetingMessage())
+
+    }
+
+    fun getGreetingMessage(): String {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+
+
+        return when (hour) {
+            in 5..11 -> "Good Morning"
+            in 12..16 -> "Good Afternoon"
+            in 17..20 -> "Good Evening"
+            else -> "Good Night"
+        }
+    }
+
 
 
 
@@ -132,24 +157,22 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun initVariable() {
         // LinearLayout items
         navHome = findViewById(R.id.nav_home)
-        navMarket = findViewById(R.id.nav_market)
-        navService = findViewById(R.id.nav_service)
-        navMessage = findViewById(R.id.nav_message)
-        navProfile = findViewById(R.id.nav_profile)
+        navStudent = findViewById(R.id.nav_student)
+        navStaff = findViewById(R.id.nav_staff)
+        navMealManagement = findViewById(R.id.nav_meal_management)
 
 // ImageView items
         iconHome = findViewById(R.id.icon_home)
-        iconMarket = findViewById(R.id.icon_market)
-        iconCropCare = findViewById(R.id.icon_crop_care)
-        iconAdvisor = findViewById(R.id.icon_advisor)
-        iconProfile = findViewById(R.id.icon_profile)
+        iconStudent = findViewById(R.id.icon_student)
+        iconStaff = findViewById(R.id.icon_staff)
+        iconMealManagement = findViewById(R.id.icon_meal_management)
+
 
 // TextView items
         txtHome = findViewById(R.id.txt_home)
-        txtMarket = findViewById(R.id.txt_market)
-        txtCropCare = findViewById(R.id.txt_crop_care)
-        txtAdvisor = findViewById(R.id.txt_advisor)
-        txtProfile = findViewById(R.id.txt_profile)
+        txtStudent = findViewById(R.id.txt_student)
+        txtStaff = findViewById(R.id.txt_staff)
+        txtMealManagement = findViewById(R.id.txt_meal_management)
     }
 
     private fun setNavigationItemColor(layout: LinearLayout?) {
@@ -163,24 +186,20 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         when (layout) {
             navHome -> {
                 txtHome.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconHome.setImageResource(R.drawable.home)
+                iconHome.setImageResource(R.drawable.home_base)
                 iconHome.layoutParams = params
             }
-            navMarket -> {
-                txtMarket.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconMarket.setImageResource(R.drawable.cart)
+            navStudent -> {
+                txtStudent.setTextColor(ContextCompat.getColor(this, R.color.base_color))
+                iconStudent.setImageResource(R.drawable.student_base)
             }
-            navService -> {
-                txtCropCare.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconCropCare.setImageResource(R.drawable.crop_care)
+            navStaff -> {
+                txtStaff.setTextColor(ContextCompat.getColor(this, R.color.base_color))
+                iconStaff.setImageResource(R.drawable.staff_base)
             }
-            navMessage -> {
-                txtAdvisor.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconAdvisor.setImageResource(R.drawable.message)
-            }
-            navProfile -> {
-                txtProfile.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconProfile.setImageResource(R.drawable.profile_user)
+            navMealManagement -> {
+                txtMealManagement.setTextColor(ContextCompat.getColor(this, R.color.base_color))
+                iconMealManagement.setImageResource(R.drawable.meal_status_base)
             }
         }
     }
@@ -190,17 +209,15 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun setAllNavigationItemBlack() {
         // Set color for all TextViews
         txtHome.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtMarket.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtCropCare.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtAdvisor.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtProfile.setTextColor(ContextCompat.getColor(this, R.color.black))
+        txtStudent.setTextColor(ContextCompat.getColor(this, R.color.black))
+        txtStaff.setTextColor(ContextCompat.getColor(this, R.color.black))
+        txtMealManagement.setTextColor(ContextCompat.getColor(this, R.color.black))
 
         // Set image resources for all ImageViews
-        iconHome.setImageResource(R.drawable.home)
-        iconMarket.setImageResource(R.drawable.cart)
-        iconCropCare.setImageResource(R.drawable.crop_care)
-        iconAdvisor.setImageResource(R.drawable.message)
-        iconProfile.setImageResource(R.drawable.profile_user)
+        iconHome.setImageResource(R.drawable.home_black)
+        iconStudent.setImageResource(R.drawable.student_black)
+        iconStaff.setImageResource(R.drawable.staff_black)
+        iconMealManagement.setImageResource(R.drawable.meal_status_black)
 
     }
 

@@ -67,6 +67,7 @@ class MCommittieeMemberAdapter(
                 putExtra("profilePic", student.profilePic)
                 putExtra("password", student.password)
                 putExtra("mealCode", student.mealCode)
+                putExtra("isLock", student.isLock)
                 putExtra("message", "current_student")
             }
             context.startActivity(intent)
@@ -87,7 +88,7 @@ class MCommittieeMemberAdapter(
         val btnNegative = dialog.findViewById<TextView>(R.id.negativeBtn)
 
         textTitle.text = "Are you sure?"
-        textMessage.text = "Are you sure? This cannot be undone."
+        textMessage.text = "This cannot be undone."
         btnPositive.text = "Remove"
 
         btnNegative.setOnClickListener {

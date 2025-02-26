@@ -78,6 +78,10 @@ dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")
 
+    implementation("com.itextpdf:itext7-core:7.1.9")
+
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
 
 
 

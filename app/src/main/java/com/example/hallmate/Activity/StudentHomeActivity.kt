@@ -3,11 +3,9 @@ package com.example.hallmate.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.result.ActivityResultRegistry
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -15,18 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.hallmate.Class.Loading
-import com.example.hallmate.Class.Loading2
-import com.example.hallmate.Fragments.MHomeFragment
+import com.example.hallmate.Fragments.SHallCardFragment
 import com.example.hallmate.Fragments.SHomeFragment
 import com.example.hallmate.Fragments.SMealStatusFragment
 import com.example.hallmate.MainActivity
-import com.example.hallmate.Model.Meal
 import com.example.hallmate.R
-import com.example.hallmate.databinding.ActivityManagerHomeBinding
 import com.example.hallmate.databinding.ActivityStudentHomeBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import java.util.Calendar
 
 class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -53,22 +47,18 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
 
     lateinit var navHome: LinearLayout
-    lateinit var navMarket: LinearLayout
-    lateinit var navService: LinearLayout
-    lateinit var navMessage: LinearLayout
-    lateinit var navProfile: LinearLayout
+    lateinit var navCard: LinearLayout
+    lateinit var navMealStatus: LinearLayout
 
     lateinit var iconHome: ImageView
-    lateinit var iconMarket: ImageView
-    lateinit var iconCropCare: ImageView
-    lateinit var iconAdvisor: ImageView
-    lateinit var iconProfile: ImageView
+    lateinit var iconMCard: ImageView
+    lateinit var iconMealStatus: ImageView
 
     lateinit var txtHome: TextView
-    lateinit var txtMarket: TextView
-    lateinit var txtCropCare: TextView
-    lateinit var txtAdvisor: TextView
-    lateinit var txtProfile: TextView
+    lateinit var txtCard: TextView
+    lateinit var txtMealStatus: TextView
+
+
 
 
     lateinit var load: Loading
@@ -94,17 +84,8 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setFragment(SHomeFragment())
 
 
-
-
-
-
-
-
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-
-
 
 
         binding.rightNavIcon.setOnClickListener {
@@ -118,32 +99,21 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         binding.navView.setNavigationItemSelectedListener(this)
 
 
-
-
         navHome.setOnClickListener {
             setNavigationItemColor(navHome)
             setFragment(SHomeFragment())
         }
 
-        navMarket.setOnClickListener {
-            setNavigationItemColor(navMarket)
+        navCard.setOnClickListener {
+            setNavigationItemColor(navCard)
+            setFragment(SHallCardFragment())
+        }
+
+        navMealStatus.setOnClickListener {
+            setNavigationItemColor(navMealStatus)
             setFragment(SMealStatusFragment())
         }
 
-        navService.setOnClickListener {
-            setNavigationItemColor(navService)
-            //setFragment(ServiceFragment())
-        }
-
-        navMessage.setOnClickListener {
-            setNavigationItemColor(navMessage)
-            // setFragment(MessageFragment())
-        }
-
-        navProfile.setOnClickListener {
-            setNavigationItemColor(navProfile)
-            //setFragment(ProfileFragment())
-        }
 
 
 
@@ -215,24 +185,21 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun initVariable() {
         // LinearLayout items
         navHome = findViewById(R.id.nav_home)
-        navMarket = findViewById(R.id.nav_market)
-        navService = findViewById(R.id.nav_service)
-        navMessage = findViewById(R.id.nav_message)
-        navProfile = findViewById(R.id.nav_profile)
+        navCard  = findViewById(R.id.nav_card)
+        navMealStatus = findViewById(R.id.nav_meal_status)
+
 
 // ImageView items
         iconHome = findViewById(R.id.icon_home)
-        iconMarket = findViewById(R.id.icon_market)
-        iconCropCare = findViewById(R.id.icon_crop_care)
-        iconAdvisor = findViewById(R.id.icon_advisor)
-        iconProfile = findViewById(R.id.icon_profile)
+        iconMCard = findViewById(R.id.icon_card)
+        iconMealStatus = findViewById(R.id.icon_meal_status)
 
 // TextView items
         txtHome = findViewById(R.id.txt_home)
-        txtMarket = findViewById(R.id.txt_market)
-        txtCropCare = findViewById(R.id.txt_crop_care)
-        txtAdvisor = findViewById(R.id.txt_advisor)
-        txtProfile = findViewById(R.id.txt_profile)
+        txtCard = findViewById(R.id.txt_card)
+        txtMealStatus = findViewById(R.id.txt_meal_status)
+
+
     }
 
     private fun setNavigationItemColor(layout: LinearLayout?) {
@@ -246,24 +213,16 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         when (layout) {
             navHome -> {
                 txtHome.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconHome.setImageResource(R.drawable.home)
+                iconHome.setImageResource(R.drawable.home_base)
                 iconHome.layoutParams = params
             }
-            navMarket -> {
-                txtMarket.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconMarket.setImageResource(R.drawable.cart)
+            navCard -> {
+                txtCard.setTextColor(ContextCompat.getColor(this, R.color.base_color))
+                iconMCard.setImageResource(R.drawable.card_bage)
             }
-            navService -> {
-                txtCropCare.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconCropCare.setImageResource(R.drawable.crop_care)
-            }
-            navMessage -> {
-                txtAdvisor.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconAdvisor.setImageResource(R.drawable.message)
-            }
-            navProfile -> {
-                txtProfile.setTextColor(ContextCompat.getColor(this, R.color.base_color))
-                iconProfile.setImageResource(R.drawable.profile_user)
+            navMealStatus -> {
+                txtMealStatus.setTextColor(ContextCompat.getColor(this, R.color.base_color))
+                iconMealStatus.setImageResource(R.drawable.meal_status_base)
             }
         }
     }
@@ -273,17 +232,14 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun setAllNavigationItemBlack() {
         // Set color for all TextViews
         txtHome.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtMarket.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtCropCare.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtAdvisor.setTextColor(ContextCompat.getColor(this, R.color.black))
-        txtProfile.setTextColor(ContextCompat.getColor(this, R.color.black))
+        txtCard.setTextColor(ContextCompat.getColor(this, R.color.black))
+        txtMealStatus.setTextColor(ContextCompat.getColor(this, R.color.black))
 
         // Set image resources for all ImageViews
-        iconHome.setImageResource(R.drawable.home)
-        iconMarket.setImageResource(R.drawable.cart)
-        iconCropCare.setImageResource(R.drawable.crop_care)
-        iconAdvisor.setImageResource(R.drawable.message)
-        iconProfile.setImageResource(R.drawable.profile_user)
+        iconHome.setImageResource(R.drawable.home_black)
+        iconMCard.setImageResource(R.drawable.card_black)
+        iconMealStatus.setImageResource(R.drawable.meal_status_black)
+
 
     }
 
@@ -304,7 +260,7 @@ class StudentHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             R.id.nav_profile -> {
 //                supportFragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment()).commit()
-                startActivity(Intent(this, MProfileActivity::class.java))
+                startActivity(Intent(this, SStudentProfileActivity::class.java))
             }
 
             R.id.nav_bill -> {
