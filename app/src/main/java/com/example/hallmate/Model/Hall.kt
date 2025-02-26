@@ -12,6 +12,9 @@ data class Hall(
     var iftarStartTime:String?=null,
     var iftarFinishTime:String?=null,
     var dinnerStartTime:String?=null,
-    var dinnerFinishTime:String?=null
+    var dinnerFinishTime:String?=null,
+    var verificationCode:String?=null
+
+
 
     )

@@ -37,11 +37,6 @@ class SMealStatusAdapter(
 
 
 
-
-
-
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealStatusViewHolder {

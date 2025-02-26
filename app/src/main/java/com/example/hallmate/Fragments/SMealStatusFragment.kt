@@ -126,7 +126,6 @@ class SMealStatusFragment : Fragment(), DialogDismissListener {
                 "dstatus" to mealForRV.dstatus
             )
 
-
             databaseRef.child(mealForRV.date.toString()).updateChildren(meal)
                 .addOnSuccessListener {
 
@@ -145,15 +144,6 @@ class SMealStatusFragment : Fragment(), DialogDismissListener {
 
 
     }
-
-
-
-
-
-
-
-
-
 
 
 
