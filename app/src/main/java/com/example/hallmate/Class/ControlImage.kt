@@ -17,7 +17,7 @@ class ControlImage(
     private val activityResultRegistry: ActivityResultRegistry,
     private val key: String
 ) {
-    var imageUri: Uri? = null
+    private var imageUri: Uri? = null
     private var imageUrl: String = ""
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
 

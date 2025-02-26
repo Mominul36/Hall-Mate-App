@@ -286,38 +286,45 @@ class MDailyReportFragment : Fragment() {
                                                                 if (meal.bstatus == true) {
                                                                     var value = binding.BStudentMeal.text.toString().toInt()
                                                                     value = value+1
+                                                                    Log.e("Firebase", "${hallId}: ${value.toString()}")
                                                                     binding.BStudentMeal.setText(value.toString())
 
                                                                     if (meal.bisMutton == true){
                                                                         var value = binding.BMuttonMeal.text.toString().toInt()
                                                                         value = value+1
+                                                                        Log.e("Firebase", "${hallId}: ${value.toString()}")
                                                                         binding.BMuttonMeal.setText(value.toString())
                                                                     }
                                                                 }
                                                                 if (meal.lstatus == true) {
                                                                     var value = binding.LStudentMeal.text.toString().toInt()
                                                                     value = value+1
+                                                                    Log.e("Firebase", "${hallId}: ${value.toString()}")
                                                                     binding.LStudentMeal.setText(value.toString())
 
                                                                     if (meal.lisMutton == true){
                                                                         var value = binding.LMuttonMeal.text.toString().toInt()
                                                                         value = value+1
+                                                                        Log.e("Firebase", "${hallId}: ${value.toString()}")
                                                                         binding.LMuttonMeal.setText(value.toString())
                                                                     }
                                                                     if (meal.isSahari == true){
                                                                         var value = binding.SahariMeal.text.toString().toInt()
                                                                         value = value+1
+                                                                        Log.e("Firebase", "${hallId}: ${value.toString()}")
                                                                         binding.SahariMeal.setText(value.toString())
                                                                     }
                                                                 }
                                                                 if (meal.dstatus == true) {
                                                                     var value = binding.DStudentMeal.text.toString().toInt()
                                                                     value = value+1
+                                                                    Log.e("Firebase", "${hallId}: ${value.toString()}")
                                                                     binding.DStudentMeal.setText(value.toString())
 
                                                                     if (meal.disMutton == true){
                                                                         var value = binding.DMuttonMeal.text.toString().toInt()
                                                                         value = value+1
+                                                                        Log.e("Firebase", "${hallId}: ${value.toString()}")
                                                                         binding.DMuttonMeal.setText(value.toString())
                                                                     }
                                                                 }
@@ -351,23 +358,13 @@ class MDailyReportFragment : Fragment() {
                                         }
 
 
-//                                        reportRef.setValue(dailyReport)
-//                                            .addOnSuccessListener {
-//                                                Log.d("Firebase", "Daily report generated successfully with no data")
-//
-//                                                setReport(dailyReport)
-//
-//                                            }
-//                                            .addOnFailureListener { e ->
-//                                                load.end()
-//                                                Toast.makeText(requireContext(),"Error: ${e.message}",Toast.LENGTH_SHORT).show()
-//                                            }
+
 
                                 }
                             }
 
                             override fun onCancelled(error: DatabaseError) {
-                                Log.e("FirebaseError", "Error fetching hall data: ${error.message}")
+                                Log.e("Firebase", "Error fetching hall data: ${error.message}")
                             }
                         })
                     }

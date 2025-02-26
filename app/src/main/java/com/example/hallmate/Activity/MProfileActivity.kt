@@ -18,7 +18,6 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.hallmate.Class.ControlImage
 import com.example.hallmate.Class.DialogDismissListener
 import com.example.hallmate.Class.Loading
 import com.example.hallmate.Class.SuccessDialog
@@ -511,12 +510,7 @@ class MProfileActivity : AppCompatActivity(), DialogDismissListener {
         binding.phone.setText(phone)
         binding.email.setText(email)
 
-        if(profilePic==""){
-            binding.pic.setImageResource(R.drawable.profile)
-        }else{
-            ControlImage(this, this.activityResultRegistry,"dsasdfd")
-                .setImageByURl(profilePic, binding.pic)
-        }
+
 
 
 

@@ -231,17 +231,13 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.myproduct -> {
-//                supportFragmentManager.beginTransaction().replace(R.id.content_frame, HomeFragment()).commit()
-                //startActivity(Intent(this,MyProductActivity::class.java))
-            }
             R.id.nav_profile -> {
 //                supportFragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment()).commit()
                 startActivity(Intent(this, MProfileActivity::class.java))
             }
-            R.id.nav_student -> {
+            R.id.nav_notice -> {
 //                supportFragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment()).commit()
-                startActivity(Intent(this, MStudentActivity::class.java))
+                startActivity(Intent(this, MNoticeActivity::class.java))
             }
 
             R.id.nav_day_meal_status -> {

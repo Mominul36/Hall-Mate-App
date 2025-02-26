@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         binding.mLogin.setOnClickListener{
             startActivity(Intent(this, ManagementLoginActivity::class.java))
         }
-        checkAuthentication()
+
 
       //  setMenuData()
 
@@ -370,123 +370,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private fun checkAuthentication() {
-        binding.main.visibility = View.GONE
-        load.start()
-        var sharedPreferences = getSharedPreferences("HallMatePreferences", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.clear().apply()
-        val user = auth.currentUser
-        if(user!=null){
-            val email = user.email.toString()
-            val key = email.substringBefore("@")
 
-            val databaseRef = database.getReference("Management")
-            databaseRef.child(key).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        var user = snapshot.getValue(Management::class.java)
-                        if(user!=null){
-
-                            editor.putString("name",user.name)
-                            editor.putString("email",user.email)
-                            editor.putString("phone",user.phone)
-                            editor.putString("designation",user.designation)
-                            editor.putString("userType",user.userType)
-                            editor.putString("profilePic",user.profilePic)
-                            editor.apply()
-
-                            if(user.userType=="1"){
-                                startActivity(Intent(this@MainActivity, ProvostHomeActivity::class.java))
-                                finish()
-                                return
-
-                            }else{
-
-                                startActivity(Intent(this@MainActivity, ManagerHomeActivity::class.java))
-                                finish()
-                                return
-
-                            }
-                        }
-                    }
-                    else {
-
-
-                        //Student Login
-
-                        val studentRef = database.getReference("Student")
-
-                        studentRef.orderByChild("email").equalTo(email)
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    if (snapshot.exists()) {
-                                        for (childSnapshot in snapshot.children) {
-                                            val student = childSnapshot.getValue(Student::class.java)
-
-                                            if(student!=null){
-                                                editor.putString("hallId", student.hallId)
-                                                editor.putString("studentId", student.studentId)
-                                                editor.putString("name", student.name)
-                                                editor.putString("email", student.email)
-                                                editor.putString("phone", student.phone)
-                                                editor.putString("department", student.department)
-                                                editor.putString("batch", student.batch)
-                                                editor.putString("roomNo", student.roomNo)
-                                                editor.putBoolean("isCommitteeMember", student.isCommitteeMember ?: false)
-                                                editor.putFloat("dueAmount", student.dueAmount?.toFloat() ?: 0.0f)
-                                                editor.putString("key", student.key)
-                                                editor.putString("profilePic", student.profilePic)
-                                                editor.putString("password", student.password)
-                                                editor.putString("mealCode", student.mealCode)
-                                                editor.putBoolean("isLock", student.isLock ?: false)
-                                                editor.putBoolean("isMutton", student.isMutton ?: false)
-
-                                                editor.apply()
-
-
-
-                                                startActivity(Intent(this@MainActivity, StudentHomeActivity::class.java))
-                                                finish()
-                                                return
-
-                                            }
-
-
-
-                                        }
-                                    } else {
-                                      //  Log.d("FirebaseData", "No student found with this email")
-                                    }
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    //Log.e("FirebaseData", "Error: ${error.message}")
-                                }
-                            })
-
-
-
-
-
-
-
-
-
-
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    load.end()
-                    Toast.makeText(this@MainActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
-
-        load.end()
-        binding.main.visibility = View.VISIBLE
-
-    }
 
 
 

@@ -18,7 +18,6 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.hallmate.Class.ControlImage
 import com.example.hallmate.Class.DialogDismissListener
 import com.example.hallmate.Class.Loading
 import com.example.hallmate.Class.SuccessDialog
