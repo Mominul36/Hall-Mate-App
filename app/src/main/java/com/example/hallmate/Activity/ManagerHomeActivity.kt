@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.hallmate.Fragments.DayMealStatusFragment
-import com.example.hallmate.Fragments.MDailyReportFragment
 import com.example.hallmate.Fragments.MHomeFragment
 import com.example.hallmate.Fragments.MReportFragment
 import com.example.hallmate.Fragments.MStaffHomeFragment
