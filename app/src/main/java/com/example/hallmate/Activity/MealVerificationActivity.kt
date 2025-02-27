@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
@@ -19,6 +21,7 @@ import com.example.hallmate.Adapter.TempAdapter
 import com.example.hallmate.Class.Loading
 import com.example.hallmate.Model.DayMealStatus
 import com.example.hallmate.Model.Hall
+import com.example.hallmate.Model.Meal
 import com.example.hallmate.Model.Student
 import com.example.hallmate.R
 import com.example.hallmate.databinding.ActivityMealVerificationBinding
@@ -39,7 +42,6 @@ import java.util.Locale
 class MealVerificationActivity : AppCompatActivity() {
 
     private lateinit var barcodeView: DecoratedBarcodeView
-    private lateinit var scannedResultTextView: TextView
     private lateinit var switchCameraButton: Button
     private var useFrontCamera = false
     private val REQUEST_CAMERA_PERMISSION = 100
@@ -47,6 +49,8 @@ class MealVerificationActivity : AppCompatActivity() {
     var flagPass = false
     var database = FirebaseDatabase.getInstance()
     private lateinit var binding: ActivityMealVerificationBinding
+
+    private var isScanning = false
 
 
     private lateinit var tempAdapter: TempAdapter
@@ -81,33 +85,20 @@ class MealVerificationActivity : AppCompatActivity() {
 
 
 
-
-
-
-
-
-
-
-
         switchCameraButton.setOnClickListener {
-            bal()
+
             useFrontCamera = !useFrontCamera
             restartScanner()
         }
     }
 
-    fun bal(){
-        val updatedData = tempAdapter.getPeriod()
 
-        Toast.makeText(this,updatedData[0],Toast.LENGTH_SHORT).show()
-    }
 
     private fun Init() {
         load = Loading(this)
-        binding.second.visibility = View.VISIBLE
-        binding.main.visibility = View.GONE
+      // binding.second.visibility = View.VISIBLE
+     //  binding.main.visibility = View.GONE
         barcodeView = findViewById(R.id.barcodeScannerView)
-        scannedResultTextView = findViewById(R.id.scannedResultTextView)
         switchCameraButton = findViewById(R.id.switchCameraButton)
 
 
@@ -143,14 +134,22 @@ class MealVerificationActivity : AppCompatActivity() {
     private val callback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult?) {
             result?.let {
-              // scannedResultTextView.text = "Scanned Number: ${it.text}"
+                if (!isScanning) {
+                    // Set scanning flag to true to prevent multiple scans
+                    isScanning = true
 
-                verifyStudent(it.text)
+                    // Process the scan result
+                    verifyStudent(it.text)
 
-
+                    // Delay to reset scanning flag (debounce)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        isScanning = false
+                    }, 4000)  // 1 second delay, adjust based on your needs
+                }
             }
         }
     }
+
 
     private fun verifyStudent(text: String?) {
         // Ensure text is not null and has at least 5 characters (4 for hallId + 1 for key)
@@ -158,8 +157,6 @@ class MealVerificationActivity : AppCompatActivity() {
             val hallId = text.substring(0, 4)  // First 4 characters are hallId
             val key = text.substring(4)         // Remaining part is the key
 
-
-            scannedResultTextView.text = hallId + "\n" + key + "\n" + text
 
             // Assume you have a reference to Firebase or your data source
             val studentRef = FirebaseDatabase.getInstance().getReference("Student")
@@ -179,12 +176,14 @@ class MealVerificationActivity : AppCompatActivity() {
                             Log.d("Firebase",student.key.toString())
                             if (student.key == key) {
 
+                                verifyMeal(hallId)
+
 
                                 // Success: Key matches
-                                Toast.makeText(this@MealVerificationActivity, "Success: Student verified!", Toast.LENGTH_SHORT).show()
+                               // Toast.makeText(this@MealVerificationActivity, "Success: Student verified!", Toast.LENGTH_SHORT).show()
                             } else {
                                 // Error: Key does not match
-                                Toast.makeText(this@MealVerificationActivity, "Error: Invalid key!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@MealVerificationActivity, "Invalid Qr Code", Toast.LENGTH_SHORT).show()
                             }
 
 
@@ -192,7 +191,7 @@ class MealVerificationActivity : AppCompatActivity() {
 
                     } else {
                         // Error: Student not found
-                        Toast.makeText(this@MealVerificationActivity, "Error: Student not found!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MealVerificationActivity, "Invalid Qr Code", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -205,6 +204,72 @@ class MealVerificationActivity : AppCompatActivity() {
             // Error: Invalid input
             Toast.makeText(this@MealVerificationActivity, "Error: Invalid input text!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun verifyMeal(hallId:String) {
+        val (day, month) = getCurrentDateAndMonth()
+        val period = tempAdapter.getPeriod()
+
+
+        val mealRef = database.getReference("Meal").child(month).child(hallId).child(day)
+            .addValueEventListener(object: ValueEventListener{
+                @SuppressLint("SuspiciousIndentation")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                     var meal = snapshot.getValue(Meal::class.java)
+                        if(meal!=null){
+                            if(period[0]=="BreakFast"){
+                                if(meal.bstatus==true){
+                                    Toast.makeText(this@MealVerificationActivity, "On", Toast.LENGTH_SHORT).show()
+                                    if(meal.bisMutton==true){
+                                        Toast.makeText(this@MealVerificationActivity, "Mutton", Toast.LENGTH_SHORT).show()
+                                    }
+                                }else{
+                                    Toast.makeText(this@MealVerificationActivity, "Of", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            if(period[0]=="Lunch"){
+                                if(meal.lstatus==true){
+                                    Toast.makeText(this@MealVerificationActivity, "On", Toast.LENGTH_SHORT).show()
+                                    if(meal.lisMutton==true){
+                                        Toast.makeText(this@MealVerificationActivity, "Mutton", Toast.LENGTH_SHORT).show()
+                                    }
+                                }else{
+                                    Toast.makeText(this@MealVerificationActivity, "Of", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            if(period[0]=="Dinner"){
+                                if(meal.dstatus==true){
+                                    Toast.makeText(this@MealVerificationActivity, "On", Toast.LENGTH_SHORT).show()
+                                    if(meal.disMutton==true){
+                                        Toast.makeText(this@MealVerificationActivity, "Mutton", Toast.LENGTH_SHORT).show()
+                                    }
+                                }else{
+                                    Toast.makeText(this@MealVerificationActivity, "Of", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+
+
+
+
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+
+
+
+
+
+
     }
 
 

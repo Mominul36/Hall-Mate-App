@@ -110,25 +110,178 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <!-- Switch Camera Button -->
-        <Button
-            android:id="@+id/switchCameraButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch Camera"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"/>
 
-        <!-- Bottom Part: Scanned Result -->
-        <TextView
-            android:id="@+id/scannedResultTextView"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Scanned Number: "
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            >
+
+            <!-- Switch Camera Button -->
+            <Button
+                android:id="@+id/switchCameraButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Switch Camera"
+                android:background="@drawable/button_background"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+           />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+
+                <TextView
+                    android:id="@+id/hallId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hall Id: 1030"
+                    android:textStyle="bold"
+                    android:textSize="30sp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/mutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mutton"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="20dp"
+                    />
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="9"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="40dp"
+                >
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/complete"
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        style="@android:style/Widget.Button"
+                        android:text="Completed"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+
+
+                        />
+
+                </LinearLayout>
+
+
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/off"
+                        android:layout_width="80dp"
+                        android:layout_height="60dp"
+                        style="@android:style/Widget.Button"
+                        android:text="Off"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+
+                        />
+
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/on"
+                        android:layout_width="80dp"
+                        android:layout_height="60dp"
+                        style="@android:style/Widget.Button"
+                        android:text="ON"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+
 
 
 
